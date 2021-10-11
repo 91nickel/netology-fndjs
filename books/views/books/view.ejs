@@ -1,0 +1,20 @@
+<%- include("./../header", {title: title}) %>
+<div class="row">
+    <% Object.keys(item).forEach(function (key) { %>
+        <div class="col-2"><%= key %></div>
+        <div class="col-10"><%= item[key] %></div>
+    <% }) %>
+        <div class="col-12">
+            <a class="btn btn-sm btn-primary" href="/books/update/<%= item.id %>">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+                Edit
+            </a>
+            <form action="/books/delete/<%= item.id %>" method="POST" class="d-inline">
+                <button class="btn btn-sm btn-danger">
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                    Delete
+                </button>
+            </form>
+        </div>
+</div>
+<%- include("./../footer") %>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="59613595-34b0-4039-a3d9-ddb2b5615796" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/books/routes/books.js" beforeDir="false" afterPath="$PROJECT_DIR$/books/routes/books.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/counter" />
+  </component>
+  <component name="ProjectId" id="1yoLPmKYn0Bql9vSyOvUyYA0LJ0" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
+    <property name="javascript.nodejs.core.library.configured.version" value="14.17.6" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="File.Encoding" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="59613595-34b0-4039-a3d9-ddb2b5615796" name="Default Changelist" comment="" />
+      <created>1632912972788</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1632912972788</updated>
+      <workItem from="1632912974117" duration="1910000" />
+      <workItem from="1633949697160" duration="17940000" />
+    </task>
+    <task id="LOCAL-00001" summary="init">
+      <created>1632913327437</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1632913327437</updated>
+    </task>
+    <task id="LOCAL-00002" summary="init">
+      <created>1632914093900</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1632914093900</updated>
+    </task>
+    <task id="LOCAL-00003" summary="init">
+      <created>1632914212596</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1632914212596</updated>
+    </task>
+    <task id="LOCAL-00004" summary="init">
+      <created>1632914497710</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1632914497710</updated>
+    </task>
+    <task id="LOCAL-00005" summary="init">
+      <created>1633961391951</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1633961391951</updated>
+    </task>
+    <task id="LOCAL-00006" summary="init">
+      <created>1633961403661</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1633961403661</updated>
+    </task>
+    <task id="LOCAL-00007" summary="ex 010">
+      <created>1633964018256</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1633964018256</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="init" />
+    <MESSAGE value="ex 010" />
+    <option name="LAST_COMMIT_MESSAGE" value="ex 010" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="361" y="71" key="#Deployment" timestamp="1633950211135">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="361" y="71" key="#Deployment/0.0.1536.824/-1920.-128.1920.1040@0.0.1536.824" timestamp="1633950211135" />
+    <state x="444" y="94" key="#Options" timestamp="1633950158313">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="444" y="94" key="#Options/0.0.1536.824/-1920.-128.1920.1040@0.0.1536.824" timestamp="1633950158313" />
+    <state x="538" y="214" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1633956979839">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="538" y="214" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824/-1920.-128.1920.1040@0.0.1536.824" timestamp="1633956979839" />
+    <state x="393" y="0" key="CommitChangelistDialog2" timestamp="1633964153632">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="393" y="0" key="CommitChangelistDialog2/0.0.1536.824/-1920.-128.1920.1040@0.0.1536.824" timestamp="1633964153632" />
+    <state x="277" y="57" key="SettingsEditor" timestamp="1632913715244">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="277" y="57" key="SettingsEditor/0.0.1536.824/-1920.-128.1920.1040@0.0.1536.824" timestamp="1632913715244" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1632914502787">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824/-1920.-128.1920.1040@0.0.1536.824" timestamp="1632914502787" />
+    <state x="578" y="326" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1632913319504">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="578" y="326" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824/-1920.-128.1920.1040@0.0.1536.824" timestamp="1632913319504" />
+    <state x="616" y="143" width="386" height="538" key="ftp.server.browser" timestamp="1633949772701">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="616" y="143" width="386" height="538" key="ftp.server.browser/0.0.1536.824/-1920.-128.1920.1040@0.0.1536.824" timestamp="1633949772701" />
+    <state x="558" y="314" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1632913255743">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="558" y="314" key="git4idea.remote.GitConfigureRemotesDialog/0.0.1536.824/-1920.-128.1920.1040@0.0.1536.824" timestamp="1632913255743" />
+    <state x="425" y="187" key="run.anything.popup" timestamp="1633957423821">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="425" y="187" key="run.anything.popup/0.0.1536.824/-1920.-128.1920.1040@0.0.1536.824" timestamp="1633957423821" />
+  </component>
+</project>

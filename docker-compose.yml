@@ -1,0 +1,22 @@
+version: "2"
+
+services:
+  books:
+    image: "91nickel/books"
+    container_name: books
+    command: npm start
+    environment:
+      PORT: 3000
+    ports:
+      - 29999:3000
+      - 80:3000
+    volumes:
+      - ./books/:/www
+  counter:
+    image: "91nickel/counter"
+    container_name: counter
+    command: npm start
+    environment:
+      PORT: 80
+    volumes:
+      - ./counter/:/www
