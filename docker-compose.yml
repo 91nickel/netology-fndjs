@@ -2,6 +2,7 @@ version: "2"
 
 services:
   books:
+    #    build: docker/books
     image: "91nickel/books"
     container_name: books
     command: npm start
@@ -13,6 +14,7 @@ services:
     volumes:
       - ./books/:/www
   counter:
+#    build: docker/counter
     image: "91nickel/counter"
     container_name: counter
     command: npm start
