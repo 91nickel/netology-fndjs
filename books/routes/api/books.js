@@ -21,20 +21,20 @@ router.get('/:id/download', function (request, response) {
     return response.status(404).json({result: 'error', message: 'Error 404 Not Found'})
 })
 
-router.get('/:id', function (request, response) {
-    const book = store.select(request.params.id);
-    if (book) {
+router.get('/:id', async function (request, response) {
+    const book = await store.select(request.params.id);
+    if (book)
         return response.json({result: book})
-    }
-    return response.status(404).json({result: 'error', message: 'Error 404 Not Found'})
+    else
+        return response.status(404).json({result: 'error', message: 'Error 404 Not Found'})
 })
 
-router.get('/', function (request, response) {
-    return response.json({result: store.select()});
+router.get('/', async function (request, response) {
+    return response.json({result: await store.select()});
 })
 
-router.post('/', function (request, response) {
-    return response.json({result: store.add(request.body)})
+router.post('/', async function (request, response) {
+    return response.json({result: await store.add(request.body)})
 })
 
 router.put('/:id/upload',
@@ -54,21 +54,21 @@ router.put('/:id/upload',
         return response.status(404).json({result: 'error', message: 'Error 404 Not Found'})
     })
 
-router.put('/:id', function (request, response) {
-    const book = store.update(request.params.id, request.body);
-    if (book) {
+router.put('/:id', async function (request, response) {
+    const book = await store.update(request.params.id, request.body);
+    if (book)
         return response.json({result: book})
-    }
-    return response.status(404).json({result: 'error', message: 'Error 404 Not Found'})
+    else
+        return response.status(404).json({result: 'error', message: 'Error 404 Not Found'})
 })
 
 
-router.delete('/:id', function (request, response) {
-    const result = store.delete(request.params.id);
-    if (result) {
+router.delete('/:id', async function (request, response) {
+    const result = await store.delete(request.params.id);
+    if (result)
         return response.json({result: 'OK'})
-    }
-    return response.status(404).json({result: 'false', message: 'Error 404 Not Found'})
+    else
+        return response.status(404).json({result: 'false', message: 'Error 404 Not Found'})
 })
 
 module.exports = router;

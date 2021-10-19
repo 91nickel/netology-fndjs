@@ -1,50 +1,65 @@
 const Book = require('./book');
+const BookSchema = require('./bookSchema');
 
 class Store {
-    constructor() {
-        this.books = [];
-    }
-
     select(id = null) {
         console.log('Store.select()', id)
-        if (id === null) return this.books;
-
-        const index = this.books.findIndex(function (el) {
-            return el.id === id
-        });
-        if (index !== -1) {
-            return this.books[index];
+        if (id === null) {
+            return BookSchema.find()
+                .then(function (result) {
+                    console.log('Store.select()->result', result);
+                    return result.map(function (fields) {
+                        return new Book(fields);
+                    })
+                })
+                .catch(function (error) {
+                    console.log('Store.select()->error', error)
+                });
         }
-        return false;
+        return BookSchema.findById(id)
+            .then(function (result) {
+                console.log('Store.select()->result', id, result);
+                return new Book(result);
+            })
+            .catch(function (error) {
+                console.log('Store.select()->error', error)
+            })
     }
 
     add(fields) {
         console.log('Store.add()', fields)
-        const book = new Book(fields);
-        this.books.push(book);
-        return book;
+        return new Book(fields).save();
     }
 
     update(id, fields) {
         console.log('Store.update()', id, fields)
-        const book = this.select(id);
-        if (book) {
-            return book.update(fields);
-        }
-        return false;
+        return this.select(id)
+            .then(function (book) {
+                return book.update(fields).save();
+            })
+            .catch(function (error) {
+                console.error(error);
+                return false;
+            })
     }
 
     delete(id) {
-        const index = this.books.findIndex(function (el) {
-            return el.id === id
-        })
-        if (index === -1) return false;
-        return this.books.splice(index, 1);
+        console.log('Store.delete()', id)
+        const book = this.select(id);
+        return this.select(id)
+            .then(function (book) {
+                return book.delete();
+            })
+            .catch(function (error) {
+                console.error(error);
+                return false;
+            })
     }
 
-    generateTestBooks(count = 1) {
+    async generateTestBooks(count = 1) {
+        const test = {...(new Book())};
+        delete test._id;
         for (let index = 0; index < count; index++) {
-            const test = {...Book.defaultFields};
             Object.keys(test).forEach(function (key) {
                 test[key] = `${key} for book ${index + 1}`;
             });

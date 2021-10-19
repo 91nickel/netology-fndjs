@@ -1,7 +1,7 @@
 <%- include("./../header", {title: title}) %>
 <form class="row" action="#" method="POST">
     <% Object.keys(fields).forEach(function (fieldName) { %>
-        <% if (fieldName === 'id') { %>
+        <% if (fieldName === '_id') { %>
             <% return %>
         <% } %>
         <div class="col-2"><%= fieldName %></div>

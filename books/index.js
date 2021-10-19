@@ -5,10 +5,9 @@ const booksRouter = require('./routes/books.js');
 const errorRouter = require('./routes/error.js');
 const userApiRouter = require('./routes/api/user.js');
 const bodyParser = require('body-parser');
-const errorMiddleware = require('./middleware/error');
+const mongoose = require('mongoose');
 const store = require('./models/store');
-
-store.generateTestBooks(10);
+const errorMiddleware = require('./middleware/error');
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -24,7 +23,28 @@ app.use('/api/user', userApiRouter)
     .use(errorMiddleware)
     .use(express.json())
 
-app.set('port', (process.env.PORT || 5000));
-app.listen(app.get('port'), function () {
-    console.log(`Server is litening on port ${app.get('port')}`);
-});
+app.set('port', (process.env.PORT || 29999));
+run();
+
+async function run() {
+    try {
+        const host = `mongodb://${process.env.DB_HOST || 'mongo'}:${process.env.DB_PORT || 27017}`;
+        const options = {
+            user: process.env.DB_USER || 'root',
+            pass: process.env.DB_PASS || '1234',
+            dbName: process.env.DB_NAME || 'db',
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        };
+        await mongoose.connect(host, options);
+
+        // store.generateTestBooks(10);
+
+        return app.listen(app.get('port'), function () {
+            console.log(`Server is litening on port ${app.get('port')}`);
+        });
+    } catch (error) {
+        console.error('Connection DB error...', error);
+        process.exit(1);
+    }
+}

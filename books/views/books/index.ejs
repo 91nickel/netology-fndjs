@@ -19,7 +19,7 @@
                             <%= i + 1 %>
                         </th>
                         <th>
-                            <a href="/books/view/<%= item.id %>"><%= item.title %></a>
+                            <a href="/books/view/<%= item._id %>"><%= item.title %></a>
                         </th>
                         <th>
                             <%= item.description %>
@@ -28,10 +28,10 @@
                             <%= item.authors %>
                         </th>
                         <th>
-                            <a class="btn btn-sm btn-primary" href="/books/update/<%= item.id %>">
+                            <a class="btn btn-sm btn-primary" href="/books/update/<%= item._id %>">
                                 <i class="fa fa-pencil" aria-hidden="true"></i>
                             </a>
-                            <form action="/books/delete/<%= item.id %>" method="POST" class="d-inline">
+                            <form action="/books/delete/<%= item._id %>" method="POST" class="d-inline">
                                 <button class="btn btn-sm btn-danger">
                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                 </button>
