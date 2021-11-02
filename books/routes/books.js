@@ -1,7 +1,7 @@
 const express = require('express');
 const http = require('http');
 const store = require('../models/store');
-const Book = require('../models/book')
+const Book = require('../models/book');
 const router = express.Router();
 
 router.get('/', async function (request, response) {

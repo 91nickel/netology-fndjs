@@ -1,21 +1,31 @@
 const express = require('express');
 const indexRouter = require('./routes/index.js');
 const booksApiRouter = require('./routes/api/books.js');
+const userRouter = require('./routes/user.js');
 const booksRouter = require('./routes/books.js');
 const errorRouter = require('./routes/error.js');
 const userApiRouter = require('./routes/api/user.js');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const {sessionDeclare, sessionMiddleware} = require('./middleware/session');
 const mongoose = require('mongoose');
 const store = require('./models/store');
 const errorMiddleware = require('./middleware/error');
+// const {passport} = require('./middleware/passport');
 
 const app = express();
 app.set('view engine', 'ejs');
+app.use(cookieParser());
+app.use(sessionDeclare);
+app.use(sessionMiddleware);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 app.use('/api/user', userApiRouter)
     .use('/api/books', booksApiRouter)
+    .use('/user', userRouter)
     .use('/books', booksRouter)
     .use('/public', express.static(__dirname + '/public'))
     .use('/err', errorRouter)
