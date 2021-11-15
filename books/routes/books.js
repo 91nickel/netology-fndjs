@@ -3,6 +3,11 @@ const http = require('http');
 const store = require('../models/store');
 const Book = require('../models/book');
 const router = express.Router();
+let io;
+
+const {passport} = require('../middleware/passport');
+router.use(passport.initialize());
+router.use(passport.session());
 
 router.get('/', async function (request, response) {
     return response.render('books/index', {title: 'Все книги', items: await store.select()})
@@ -39,8 +44,14 @@ router.get('/view/:id', async function (request, response) {
         post.write('');
         post.end();
 
-        function includeTemplate () {
-            return response.render('books/view', {title: `Просмотр ${book.title}`, item: book})
+        function includeTemplate() {
+            if (!io)
+                io = require('./../models/socket').createBookViewIO();
+            const data = {title: `Просмотр ${book.title}`, item: book};
+            if (request.isAuthenticated && request.isAuthenticated()) {
+                data.user = request.user.username;
+            }
+            return response.render('books/view', data)
         }
     } else {
         return response.status(404).render('404')

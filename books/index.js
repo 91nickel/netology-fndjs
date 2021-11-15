@@ -1,4 +1,6 @@
 const express = require('express');
+const http = require('http');
+const socketIO = require('socket.io');
 const indexRouter = require('./routes/index.js');
 const booksApiRouter = require('./routes/api/books.js');
 const userRouter = require('./routes/user.js');
@@ -9,11 +11,13 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const {sessionDeclare, sessionMiddleware} = require('./middleware/session');
 const mongoose = require('mongoose');
-const store = require('./models/store');
+// const store = require('./models/store');
 const errorMiddleware = require('./middleware/error');
 // const {passport} = require('./middleware/passport');
 
 const app = express();
+const {server, io} = require('./models/socket').createServer(app);
+
 app.set('view engine', 'ejs');
 app.use(cookieParser());
 app.use(sessionDeclare);
@@ -50,7 +54,7 @@ async function run() {
 
         // store.generateTestBooks(10);
 
-        return app.listen(app.get('port'), function () {
+        return server.listen(app.get('port'), function () {
             console.log(`Server is litening on port ${app.get('port')}`);
         });
     } catch (error) {

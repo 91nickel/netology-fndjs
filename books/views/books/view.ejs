@@ -4,17 +4,49 @@
         <div class="col-2"><%= key %></div>
         <div class="col-10"><%= item[key] %></div>
     <% }) %>
-        <div class="col-12">
-            <a class="btn btn-sm btn-primary" href="/books/update/<%= item._id %>">
-                <i class="fa fa-pencil" aria-hidden="true"></i>
-                Edit
-            </a>
-            <form action="/books/delete/<%= item._id %>" method="POST" class="d-inline">
-                <button class="btn btn-sm btn-danger">
-                    <i class="fa fa-trash" aria-hidden="true"></i>
-                    Delete
-                </button>
-            </form>
+    <div class="col-12">
+        <a class="btn btn-sm btn-primary" href="/books/update/<%= item._id %>">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+            Edit
+        </a>
+        <form action="/books/delete/<%= item._id %>" method="POST" class="d-inline">
+            <button class="btn btn-sm btn-danger">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                Delete
+            </button>
+        </form>
+    </div>
+    <div class="col-12">
+        <div class="row">
+            <div class="col-12 mt-4">
+                Комментарии
+            </div>
+            <div id="chat" class="col-12">
+                <% if (item.comments) { %>
+                    <% item.comments.forEach(function (comment) { %>
+                        <div class="row mt-4">
+                            <div class="col-12"><b><%= comment.user %></b></div>
+                            <div class="col-12"><i><%= comment.text %></i></div>
+                        </div>
+                    <% }) %>
+                <% } %>
+            </div>
         </div>
+        <form id="comment" class="row" action="#">
+            <div class="col-12 mt-4">
+                Оставить комментарий
+            </div>
+            <label class="col-12">
+                <input type="text" name="user" value="<%= typeof user !== 'undefined' ? user : '' %>"
+                       placeholder="Пользователь" class="form-control"/>
+            </label>
+            <label class="col-12">
+                <textarea name="comment" cols="30" rows="10" placeholder="Комментарий" class="form-control"></textarea>
+            </label>
+            <div class="col-12">
+                <button class="btn btn-success" type="submit">Отправить</button>
+            </div>
+        </form>
+    </div>
 </div>
-<%- include("./../footer") %>
+<%- include("./../footer", {scripts: ["/socket.io/socket.io.js", "/public/book.js"]}) %>

@@ -11,6 +11,7 @@ class Book {
     fileCover = '';
     fileName = '';
     fileBook = '';
+    comments = [];
 
     constructor(fields = {}) {
         Object.keys(this).forEach(function (key) {
