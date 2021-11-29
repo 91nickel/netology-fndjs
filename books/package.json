@@ -6,7 +6,10 @@
   "scripts": {
     "start": "node index.js",
     "prod": "pm2 start index.js --watch --ignore-watch=node_modules",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "build": "tsc --project ./tsconfig.json --watch",
+    "eslint": "eslint --cache --ext .js,.jsx,.ts,.tsx src",
+    "eslint:dump": "eslint --print-config ./.eslintrc.json"
   },
   "author": "Nikita Kuznetsov <91nickel@gmail.com>",
   "license": "ISC",
@@ -25,6 +28,10 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.12"
+    "nodemon": "^2.0.12",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "eslint": "^8.3.0",
+    "typescript": "^4.5.2"
   }
 }

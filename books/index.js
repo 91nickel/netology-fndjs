@@ -15,6 +15,10 @@ const mongoose = require('mongoose');
 const errorMiddleware = require('./middleware/error');
 // const {passport} = require('./middleware/passport');
 
+// const booksRepository = require('./models/booksRepository');
+// booksRepository.getBooks().then((res) => console.log('RES: getBooks()', res));
+// booksRepository.getBook().then((res) => console.log('RES: getBook()', res));
+
 const app = express();
 const {server, io} = require('./models/socket').createServer(app);
 

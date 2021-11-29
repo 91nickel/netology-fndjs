@@ -9,6 +9,7 @@ class Store {
                 .then(function (result) {
                     console.log('Store.select()->result', result);
                     return result.map(function (fields) {
+                        console.log('typeof fields._id', typeof fields._id);
                         return new Book(fields);
                     })
                 })
@@ -45,7 +46,6 @@ class Store {
 
     delete(id) {
         console.log('Store.delete()', id)
-        const book = this.select(id);
         return this.select(id)
             .then(function (book) {
                 return book.delete();
