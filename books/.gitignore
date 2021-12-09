@@ -1,4 +1,7 @@
+index.js
 .idea/
-*.js
+middleware/**/*.js
+models/**/*.js
+routes/**/*.js
 node_modules/
 public/img/

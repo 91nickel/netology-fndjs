@@ -14,13 +14,11 @@ import {sessionDeclare, sessionMiddleware} from './middleware/session.js';
 import mongoose from 'mongoose';
 // const store = require('./models/store');
 import errorMiddleware from './middleware/error.js';
+
 // const {passport} = require('./middleware/passport');
 // const booksRepository = require('./models/booksRepository');
 // booksRepository.getBooks().then((res) => console.log('RES: getBooks()', res));
 // booksRepository.getBook().then((res) => console.log('RES: getBook()', res));
-
-import path from 'path';
-const __dirname = path.resolve();
 
 const app = express();
 import {createServer} from './models/socket.js';
