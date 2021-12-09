@@ -2,18 +2,18 @@ import "reflect-metadata";
 import express from 'express';
 import http from 'http';
 import {Socket} from 'socket.io';
-import indexRouter from './routes/index.js';
-import booksApiRouter from './routes/api/books.js';
-import userRouter from './routes/user.js';
-import booksRouter from './routes/books.js';
-import errorRouter from './routes/error.js';
-import userApiRouter from './routes/api/user.js';
+import indexRouter from './routes/index';
+import booksApiRouter from './routes/api/books';
+import userRouter from './routes/user';
+import booksRouter from './routes/books';
+import errorRouter from './routes/error';
+import userApiRouter from './routes/api/user';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
-import {sessionDeclare, sessionMiddleware} from './middleware/session.js';
+import {sessionDeclare, sessionMiddleware} from './middleware/session';
 import mongoose from 'mongoose';
 // const store = require('./models/store');
-import errorMiddleware from './middleware/error.js';
+import errorMiddleware from './middleware/error';
 
 // const {passport} = require('./middleware/passport');
 // const booksRepository = require('./models/booksRepository');
@@ -21,7 +21,7 @@ import errorMiddleware from './middleware/error.js';
 // booksRepository.getBook().then((res) => console.log('RES: getBook()', res));
 
 const app = express();
-import {createServer} from './models/socket.js';
+import {createServer} from './models/socket';
 const {server, io} = createServer(app);
 
 app.set('view engine', 'ejs');

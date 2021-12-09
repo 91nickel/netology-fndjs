@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
-import User from '../models/user.js';
-import passport from'../middleware/passport.js';
+import User from '../models/user';
+import passport from'../middleware/passport';
 
 router.use(passport.initialize());
 router.use(passport.session());

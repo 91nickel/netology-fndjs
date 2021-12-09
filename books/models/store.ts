@@ -1,5 +1,5 @@
-import Book from './book.js';
-import BookSchema from './bookSchema.js';
+import Book from './book';
+import BookSchema from './bookSchema';
 
 class Store {
     select(id = null) {

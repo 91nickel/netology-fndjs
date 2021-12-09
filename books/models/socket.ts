@@ -1,6 +1,6 @@
 import http from 'http';
 import { Server } from 'socket.io';
-import store from '../models/store.js';
+import store from '../models/store';
 
 let server, io;
 
@@ -48,4 +48,4 @@ export const createBookViewIO = function () {
     return io;
 }
 
-export default {createServer, createBookViewIO, server, io}
+export default {createServer, createBookViewIO, server, io, Server}

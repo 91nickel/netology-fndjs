@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import express from 'express';
-import fileMiddleware from '../../middleware/upload_file.js';
-import store from '../../models/store.js';
+import fileMiddleware from '../../middleware/upload_file';
+import store from '../../models/store';
 const router = express.Router();
 
 router.get('/:id/download', function (request, response) {

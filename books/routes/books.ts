@@ -1,13 +1,13 @@
 import express from 'express';
 import http from 'http';
-import store from '../models/store.js';
-import Book from '../models/book.js';
-import socket from './../models/socket.js';
+import store from '../models/store';
+import Book from '../models/book';
+import socket from './../models/socket';
 
 const router = express.Router();
-let io;
+let io: typeof socket.Server;
 
-import passport from '../middleware/passport.js';
+import passport from '../middleware/passport';
 
 router.use(passport.initialize());
 router.use(passport.session());

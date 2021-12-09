@@ -1,7 +1,7 @@
 import passport from 'passport';
 import PassportLocal from 'passport-local';
 const LocalStrategy = PassportLocal.Strategy;
-import User from '../models/user.js';
+import User from '../models/user';
 
 const options = {
     usernameField: 'username',

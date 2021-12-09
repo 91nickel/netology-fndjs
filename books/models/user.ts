@@ -1,4 +1,4 @@
-import UserSchema from './userSchema.js';
+import UserSchema from './userSchema';
 
 class User {
 

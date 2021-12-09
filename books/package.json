@@ -2,7 +2,7 @@
   "name": "006-express",
   "version": "1.0.0",
   "description": "**Правила выполнения домашней работы:** \r * Выполняйте домашнее задание в отдельной ветке проекта на гитхабе.\r * В поле для сдачи работы прикрепите ссылку на ваш проект в Git.\r * Присылать на проверку можно каждую задачу по отдельности или все задачи вместе. \r * Во время проверки по частям ваша домашняя работа будет со статусом «На доработке».\r * Любые вопросы по решению задач задавайте в Slack.",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "start": "node index.js",
     "prod": "pm2 start index.js --watch --ignore-watch=node_modules",
@@ -29,6 +29,9 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@types/body-parser": "^1.19.2",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/express": "^4.17.13",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
     "eslint": "^8.3.0",
