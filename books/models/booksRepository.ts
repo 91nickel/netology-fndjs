@@ -1,65 +1,79 @@
-const Book = require('./book');
-const BookSchema = require('./bookSchema');
+import {injectable, inject} from "inversify";
+import "reflect-metadata";
+import {Book} from './book';
+import BookSchema from './bookSchema';
+import {BookType} from './types';
+import {IBooksRepository} from "./interfaces";
 
-class BooksRepository {
-
+@injectable()
+export class BooksRepository implements IBooksRepository {
     // создание книги
-    static createBook(fields: object) {
+    async createBook(fields: BookType): Promise<Book | void> {
         console.log('BooksRepository.createBook()', fields)
-        return new Book(fields).save();
+        const book: Book = new Book(fields);
+        try {
+            await book.save();
+            return book
+        } catch (error) {
+            return console.error(error)
+        }
     }
 
     //получение книги по id
-    static getBook(id: string) {
+    async getBook(id: string): Promise<Book | void> {
         console.log('BooksRepository.getBook()', id)
-        return BookSchema.findById(id)
-            .then(function (result: object) {
-                console.log('Store.select()->result', id, result);
-                return new Book(result);
-            })
-            .catch(function (error: object) {
-                console.log('Store.select()->error', error)
-            });
+        try {
+            const bookFields: BookType = (await BookSchema.findById(id))._doc;
+            const book: Book = new Book(bookFields);
+            console.log('Store.select()->result', id, book);
+            return book;
+        } catch (error) {
+            return console.error(error)
+        }
     }
 
     //получение всех книг
-    static getBooks() {
-        console.log('BooksRepository.getBooks()');
-        return BookSchema.find()
-            .then(function (result: object[]) {
-                console.log('Store.select()->result', result);
-                return result.map(fields => new Book(fields))
-            })
-            .catch(function (error: object) {
-                console.log('Store.select()->error', error)
+    async getBooks(): Promise<Array<Book> | void> {
+        console.log('BooksRepository.getBooks()...');
+        try {
+            let collection = await BookSchema.find();
+            console.log('BooksRepository.getBooks()->result', collection);
+            collection = collection.map(schema => {
+                return new Book(schema._doc)
             });
+            return collection;
+        } catch (error) {
+            return console.log('BooksRepository.getBooks()->error', error)
+        }
     }
 
     //обновление книги
-    static updateBook(id: string, fields: object) {
+    async updateBook(id: string, fields: BookType): Promise<Book | void> {
         console.log('BooksRepository.updateBook()', id, fields)
-        return this.getBook(id)
-            .then(function (book: object) {
-                return book.update(fields).save();
-            })
-            .catch(function (error: object) {
-                console.error(error);
-                return false;
-            })
+        try {
+            const book: Book | void = await this.getBook(id);
+            if (book instanceof Book) {
+                await book.update(fields).save();
+                return book;
+            }
+        } catch (error) {
+            return console.log('BookRepository.updateBook()->error', error)
+        }
     }
 
     //удаление книги
-    static deleteBook(id: string) {
+    async deleteBook(id: string): Promise<Book | void> {
         console.log('BooksRepository.deleteBook()', id)
-        return this.getBook(id)
-            .then(function (book: object) {
-                return book.delete();
-            })
-            .catch(function (error: object) {
-                console.error(error);
-                return false;
-            })
+        try {
+            const book: Book | void = await this.getBook(id);
+            if (book instanceof Book) {
+                await book.delete();
+                return book;
+            }
+        } catch (error) {
+            return console.log('BookRepository.deleteBook()->error', error)
+        }
     }
 }
 
-module.exports = BooksRepository;
+

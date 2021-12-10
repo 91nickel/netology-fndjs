@@ -1,42 +1,31 @@
+import {injectable, inject} from "inversify";
+import "reflect-metadata";
 import BookSchema from './bookSchema';
+import {BookType} from "./types";
+import {IBook} from "./interfaces";
 
-type BookType = {
-    //[key: string]: object | null | string | number | object[] | undefined
-    _id?: object | null
-    title?: string
-    description?: string
-    authors?: string
-    favorite?: string
-    fileCover?: string
-    fileName?: string
-    fileBook?: string
-    comments?: object[]
-    counter?: number
-}
+@injectable()
+export class Book implements IBook {
+    public _id = null
+    public title = ''
+    public description = ''
+    public authors = ''
+    public favorite = ''
+    public fileCover = ''
+    public fileName = ''
+    public fileBook = ''
+    public comments = []
+    public counter = 0
 
-interface BookInterface {
-    [key: string]: object | null | string | number | object[] | undefined
-
-    save(): Promise<Book>
-
-    delete(): Promise<Book>
-}
-
-export default class Book implements BookInterface {
-
-    [key: string]: object | null | string | number | object[] | undefined
-
-    static bookEmptyFields: BookType = {
-        _id: null, title: '', description: '', authors: '', favorite: '', fileCover: '', fileName: '', fileBook: '',
-        comments: [], counter: 0
-    }
-
-    constructor(fields: BookType) {
-        Object.keys(Book.bookEmptyFields).forEach((key: string): void => {
-            this[key] = fields[key] ? fields[key] : Book.bookEmptyFields[key]
-            return;
+    constructor(fields: BookType = {}) {
+        // console.log('Book->constructor() ', fields)
+        Object.keys(fields).forEach((key: string) => {
+            // console.log('... ', `key= ${key}  `, `hasOwnProperty=${this.hasOwnProperty(key)} `)
+            if (this.hasOwnProperty(key)) {
+                this[key] = fields[key];
+            }
         })
-        console.log('Book->constructor()', this);
+        console.log('Book->constructor->fields', this);
     }
 
     async save(): Promise<Book> {
@@ -68,6 +57,15 @@ export default class Book implements BookInterface {
         } catch (error) {
             console.log('Book->delete->error', error);
         }
+        return this;
+    }
+
+    update (fields: BookType): Book {
+        Object.keys(fields).forEach((key) => {
+            if (typeof this[key] !== 'undefined') {
+                this[key] = fields[key];
+            }
+        })
         return this;
     }
 }

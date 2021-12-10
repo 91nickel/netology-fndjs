@@ -1,4 +1,4 @@
-import Book from './book';
+import {Book} from './book';
 import BookSchema from './bookSchema';
 
 class Store {
@@ -7,10 +7,11 @@ class Store {
         if (id === null) {
             return BookSchema.find()
                 .then(function (result) {
-                    console.log('Store.select()->result', result);
+                    // console.log('Store.select()->result', result);
                     return result.map(function (fields) {
-                        console.log('typeof fields._id', typeof fields._id);
-                        return new Book(fields);
+                        // console.log('fields', fields);
+                        // console.log('typeof fields._id', typeof fields._id);
+                        return new Book(fields._doc);
                     })
                 })
                 .catch(function (error) {
@@ -19,8 +20,8 @@ class Store {
         }
         return BookSchema.findById(id)
             .then(function (result) {
-                console.log('Store.select()->result', id, result);
-                return new Book(result);
+                // console.log('Store.select()->result', id, result);
+                return new Book(result._doc);
             })
             .catch(function (error) {
                 console.log('Store.select()->error', error)

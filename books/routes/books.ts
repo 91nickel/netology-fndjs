@@ -1,8 +1,11 @@
 import express from 'express';
 import http from 'http';
 import store from '../models/store';
-import Book from '../models/book';
+import {Book} from '../models/book';
 import socket from './../models/socket';
+import {container} from "../models/container";
+import {BooksRepository} from "../models/booksRepository";
+const repository = container.get(BooksRepository);
 
 const router = express.Router();
 let io: typeof socket.Server;
@@ -13,10 +16,14 @@ router.use(passport.initialize());
 router.use(passport.session());
 
 router.get('/', async function (request, response) {
-    return response.render('books/index', {title: 'Все книги', items: await store.select()})
+    // return response.render('books/index', {title: 'Все книги', items: await store.select()})
+    const items = await repository.getBooks();
+    console.log('Ex3...', items);
+    return response.render('books/index', {title: 'Все книги', items: items})
 })
 router.get('/view/:id', async function (request, response) {
-    const book = await store.select(request.params.id);
+    // const book = await store.select(request.params.id);
+    const book = await repository.getBook(request.params.id)
     if (book) {
         await http.get(`http:counter/counter/${request.params.id}`, (res) => {
             const statusCode = res.statusCode;
@@ -60,22 +67,26 @@ router.get('/view/:id', async function (request, response) {
         return response.status(404).render('404')
     }
 })
+
 router.get('/create', function (request, response) {
     return response.render('books/create', {title: 'Создание новой книги', fields: (new Book())})
 })
 router.post('/create', async function (request, response) {
-    await store.add(request.body);
+    // await store.add(request.body);
+    await repository.createBook(request.body);
     return response.redirect(`/books`);
 })
 router.get('/update/:id', async function (request, response) {
-    const book = await store.select(request.params.id);
+    //const book = await store.select(request.params.id);
+    const book = await repository.getBook(request.params.id);
     if (book) {
         return response.render('books/update', {title: `Просмотр ${book.title}`, item: book})
     }
     return response.status(404).render('404')
 })
 router.post('/update/:id', async function (request, response) {
-    const book = await store.select(request.params.id);
+    //const book = await store.select(request.params.id);
+    const book = await repository.getBook(request.params.id);
     if (book) {
         await book.update(request.body).save();
         return response.redirect(`/books`);
@@ -83,12 +94,14 @@ router.post('/update/:id', async function (request, response) {
     return response.status(404).render('404')
 })
 router.post('/delete/:id', async function (request, response) {
-    const book = await store.select(request.params.id);
+    // const book = await store.select(request.params.id);
+    const book = await repository.getBook(request.params.id);
     if (book) {
         await book.delete();
         return response.redirect(`/books`);
     }
     return response.status(404).render('404')
 })
+
 
 export default router;
