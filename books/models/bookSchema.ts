@@ -1,15 +1,15 @@
 import pkg from 'mongoose';
-const {Schema, model} = pkg;
+const {Schema, SchemaTypes, model} = pkg;
 
 const BookSchema = new Schema({
-    title: String,
-    description: String,
-    authors: String,
-    favorite: String,
-    fileCover: String,
-    fileName: String,
-    fileBook: String,
-    comments: Array,
+    title: SchemaTypes.String,
+    description: SchemaTypes.String,
+    authors: SchemaTypes.String,
+    favorite: SchemaTypes.String,
+    fileCover: SchemaTypes.String,
+    fileName: SchemaTypes.String,
+    fileBook: SchemaTypes.String,
+    comments: SchemaTypes.Array,
 })
 
 export default model('BookSchema', BookSchema);

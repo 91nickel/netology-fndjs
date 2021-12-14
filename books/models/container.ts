@@ -5,5 +5,6 @@ import {BooksRepository} from "./booksRepository";
 import {IBook, IBooksRepository} from "./interfaces";
 
 export const container  = new Container();
+
 container.bind<IBooksRepository>(BooksRepository).toSelf();
 container.bind<IBook>(Book).toSelf();

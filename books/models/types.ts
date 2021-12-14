@@ -1,7 +1,6 @@
-import {IBook} from "./interfaces";
+import {IBook, IUser} from "./interfaces";
 
 export type BookType = {
-    //[key: string]: object | null | string | number | object[] | undefined
     _id?: object | null
     title?: string
     description?: string
@@ -14,4 +13,14 @@ export type BookType = {
     counter?: number
 }
 
+export type UserType = {
+    _id?: object | string | null;
+    username?: string;
+    password?: string;
+    name?: string;
+    lastname?: string;
+    session?: string;
+}
+
 export type BookTypeKeys = keyof IBook;
+export type UserTypeKeys = keyof IUser;

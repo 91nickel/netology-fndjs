@@ -1,5 +1,6 @@
 import {Book} from "./book";
-import {BookType} from "./types";
+import {User} from "./user";
+import {BookType, UserType} from "./types";
 
 export interface IBook {
     _id: object | null
@@ -30,4 +31,18 @@ export interface IBooksRepository {
     updateBook(id: string, fields: BookType): Promise<Book | void>;
 
     deleteBook(id: string): Promise<Book | void>;
+}
+
+export interface IUser {
+    _id: object | null;
+    username: string;
+    password: string;
+    name: string;
+    lastname: string;
+    session: string;
+    update(fields: UserType): User
+    save(): Promise<User>
+    delete(): Promise<User>
+    checkPassword(password: string): boolean
+    // getUser(fields: UserType): Promise<User | null>
 }

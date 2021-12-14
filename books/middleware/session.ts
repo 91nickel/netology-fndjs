@@ -7,7 +7,7 @@ export const sessionDeclare = session(
             path: '/',
             httpOnly: true,
             secure: false,
-            maxAge: null,
+            maxAge: undefined,
         },
         name: name,
         secret: process.env.COOKIE_SECRET || '12345',
@@ -17,7 +17,7 @@ export const sessionDeclare = session(
         saveUninitialized: true,
     }
 );
-export const sessionMiddleware = function (request, response, next) {
+export const sessionMiddleware = function (request: any, response: any, next: Function) {
     // console.log('sessionMiddleware()');
     // console.log('request.session', request.session);
     // console.log("request.sessionID: ", request.sessionID); // eslint-disable-line

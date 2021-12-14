@@ -1,11 +1,11 @@
 import express from 'express';
 import http from 'http';
-import store from '../models/store';
+// import store from '../models/store';
 import {Book} from '../models/book';
 import socket from './../models/socket';
 import {container} from "../models/container";
 import {BooksRepository} from "../models/booksRepository";
-const repository = container.get(BooksRepository);
+const repository: BooksRepository = container.get(BooksRepository);
 
 const router = express.Router();
 let io: typeof socket.Server;
@@ -15,13 +15,13 @@ import passport from '../middleware/passport';
 router.use(passport.initialize());
 router.use(passport.session());
 
-router.get('/', async function (request, response) {
+router.get('/', async function (request: any, response: any) {
     // return response.render('books/index', {title: 'Все книги', items: await store.select()})
     const items = await repository.getBooks();
     console.log('Ex3...', items);
     return response.render('books/index', {title: 'Все книги', items: items})
 })
-router.get('/view/:id', async function (request, response) {
+router.get('/view/:id', async function (request: any, response: any) {
     // const book = await store.select(request.params.id);
     const book = await repository.getBook(request.params.id)
     if (book) {
@@ -54,10 +54,10 @@ router.get('/view/:id', async function (request, response) {
         post.write('');
         post.end();
 
-        function includeTemplate() {
+        const includeTemplate = function(): void {
             if (!io)
                 io = socket.createBookViewIO()
-            const data = {title: `Просмотр ${book.title}`, item: book};
+            const data = {title: `Просмотр ${book.title}`, item: book, user: undefined};
             if (request.isAuthenticated && request.isAuthenticated()) {
                 data.user = request.user.username;
             }
@@ -68,23 +68,23 @@ router.get('/view/:id', async function (request, response) {
     }
 })
 
-router.get('/create', function (request, response) {
+router.get('/create', function (request: any, response: any) {
     return response.render('books/create', {title: 'Создание новой книги', fields: (new Book())})
 })
-router.post('/create', async function (request, response) {
+router.post('/create', async function (request: any, response: any) {
     // await store.add(request.body);
     await repository.createBook(request.body);
     return response.redirect(`/books`);
 })
-router.get('/update/:id', async function (request, response) {
+router.get('/update/:id', async function (request: any, response: any) {
     //const book = await store.select(request.params.id);
-    const book = await repository.getBook(request.params.id);
+    const book: Book | void = await repository.getBook(request.params.id);
     if (book) {
         return response.render('books/update', {title: `Просмотр ${book.title}`, item: book})
     }
     return response.status(404).render('404')
 })
-router.post('/update/:id', async function (request, response) {
+router.post('/update/:id', async function (request: any, response: any) {
     //const book = await store.select(request.params.id);
     const book = await repository.getBook(request.params.id);
     if (book) {
@@ -93,7 +93,7 @@ router.post('/update/:id', async function (request, response) {
     }
     return response.status(404).render('404')
 })
-router.post('/delete/:id', async function (request, response) {
+router.post('/delete/:id', async function (request: any, response: any) {
     // const book = await store.select(request.params.id);
     const book = await repository.getBook(request.params.id);
     if (book) {

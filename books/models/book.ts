@@ -62,7 +62,8 @@ export class Book implements IBook {
 
     update (fields: BookType): Book {
         Object.keys(fields).forEach((key) => {
-            if (typeof this[key] !== 'undefined') {
+            if (this.hasOwnProperty(key)) {
+                // @ts-ignore
                 this[key] = fields[key];
             }
         })

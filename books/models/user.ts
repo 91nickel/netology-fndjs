@@ -1,111 +1,83 @@
 import UserSchema from './userSchema';
+import {IUser} from "./interfaces";
+import {UserType} from "./types";
 
-class User {
+export class User implements IUser {
+    public _id = null;
+    public username = '';
+    public password = '';
+    public name = '';
+    public lastname = '';
+    public session = '';
 
-    _id;
-    username;
-    password;
-    name;
-    lastname;
-    session;
-
-    constructor(fields = {}) {
-        Object.keys(this).forEach(function (key) {
-            if (typeof fields[key] !== 'undefined')
-                this[key] = fields[key]
-        }.bind(this))
-    }
-
-    update(fields = {}) {
-        Object.keys(fields).forEach(function (key) {
-            if (key !== '_id' && typeof this[key] !== 'undefined') {
+    constructor(fields: UserType) {
+        Object.keys(this).forEach((key: any): void => {
+            if (this.hasOwnProperty(key)) {
                 this[key] = fields[key];
             }
-        }.bind(this))
+        })
+    }
+
+    update(fields: UserType) {
+        Object.keys(fields).forEach((key: any): void => {
+                if (key === '_id') return;
+                if (this.hasOwnProperty(key)) {
+                    // @ts-ignore
+                    this[key] = fields[key];
+                }
+            }
+        )
         return this;
     }
 
-    save() {
+    async save(): Promise<User> {
         console.log('User->save', this);
-        if (typeof this._id === 'undefined') { // Значит объект еще не в базе
-            return new UserSchema({...this}).save()
-                .then(function (result) {
-                    console.log('User->saveNew->result', result);
-                    this._id = result._id;
-                    return this;
-                }.bind(this))
-                .catch(function (error) {
-                    console.log('User->saveNew->error', error);
-                    return error;
-                });
-        } else { // а это уже в базе
-            return UserSchema.findByIdAndUpdate(this._id, {...this})
-                .then(function (result) {
-                    console.log('User->saveOld->result', result);
-                    return this;
-                }.bind(this))
-                .catch(function (error) {
-                    console.log('User->saveOld->error', error);
-                    return error;
-                });
+        if (typeof this._id) { // Значит объект в базе
+            try {
+                const result = await UserSchema.findByIdAndUpdate(this._id, {...this});
+                console.log('User->saveOld->result', result);
+            } catch (error) {
+                console.error('User->saveOld->error', error);
+            }
+        } else { // а это не в базе
+            try {
+                const result = await new UserSchema({...this}).save();
+                this._id = result._id;
+                console.log('User->saveNew->result', result);
+            } catch (error) {
+                console.error('User->saveNew->error', error);
+            }
         }
+        return this;
     }
 
-    delete() {
+    async delete(): Promise<User> {
         console.log('User->delete', this._id);
-        return UserSchema.findByIdAndDelete(this._id)
-            .then(function (result) {
-                console.log('User->delete->result', result);
-                return result;
-            })
-            .catch(function (error) {
-                console.log('User->delete->error', error);
-                return error;
-            });
+        try {
+            const result = await UserSchema.findByIdAndDelete(this._id);
+            console.log('User->delete->result', result);
+        } catch (error) {
+            console.log('User->delete->error', error);
+        }
+        return this;
     }
 
-    checkPassword(password) {
+    checkPassword(password: string): boolean {
         console.log('User->checkPassword', this.password, password, password === this.password);
         return password === this.password;
     }
 
-    static find(filter = {}) {
-        console.log('User::find()', filter);
-        return UserSchema.find(filter)
-            .then(function (result) {
-                console.log('User.find()->result', result);
-                if (result._id) {
-                    return new User(result);
-                } else {
-                    return null;
-                }
-            })
-            .catch(function (error) {
-                console.log('User.find()->error', error)
-            })
+    static async getUser(fields: UserType): Promise<User | null> {
+        console.log('User->getUser', fields);
+        try {
+            const result = await UserSchema.findOne(fields);
+            console.log('User.find()->result', result);
+            if (result) {
+                return new User(result);
+            }
+        } catch (error) {
+            console.log('User.find()->error', error);
+        }
+        return null;
     }
-
-    static findOne(filter = {}, cb = function (err, user) {
-        if (err) return err;
-        return user
-    }) {
-        console.log('User::findOne()', filter);
-        return UserSchema.findOne(filter)
-            .then(function (result) {
-                console.log('User.findOne()->result', result);
-                if (result) {
-                    return cb(null, new User(result));
-                } else {
-                    return cb(null, null);
-                }
-            })
-            .catch(function (error) {
-                console.log('User.find()->error', error)
-                return cb(error)
-            })
-    }
-
 }
-
-export default User;
-

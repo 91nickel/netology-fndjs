@@ -3,7 +3,7 @@ import "reflect-metadata";
 import {Book} from './book';
 import BookSchema from './bookSchema';
 import {BookType} from './types';
-import {IBooksRepository} from "./interfaces";
+import {IBooksRepository, IBook} from "./interfaces";
 
 @injectable()
 export class BooksRepository implements IBooksRepository {
