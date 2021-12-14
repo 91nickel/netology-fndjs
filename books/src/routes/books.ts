@@ -2,7 +2,7 @@ import express from 'express';
 import http from 'http';
 // import store from '../models/store';
 import {Book} from '../models/book';
-import socket from './../models/socket';
+import socket from '../models/socket';
 import {container} from "../models/container";
 import {BooksRepository} from "../models/booksRepository";
 const repository: BooksRepository = container.get(BooksRepository);
