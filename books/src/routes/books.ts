@@ -1,19 +1,29 @@
-const express = require('express');
-const http = require('http');
-const store = require('../models/store');
-const Book = require('../models/book');
-const router = express.Router();
-let io;
+import express from 'express';
+import http from 'http';
+// import store from '../models/store';
+import {Book} from '../models/book';
+import socket from '../models/socket';
+import {container} from "../models/container";
+import {BooksRepository} from "../models/booksRepository";
+const repository: BooksRepository = container.get(BooksRepository);
 
-const {passport} = require('../middleware/passport');
+const router = express.Router();
+let io: typeof socket.Server;
+
+import passport from '../middleware/passport';
+
 router.use(passport.initialize());
 router.use(passport.session());
 
-router.get('/', async function (request, response) {
-    return response.render('books/index', {title: 'Все книги', items: await store.select()})
+router.get('/', async function (request: any, response: any) {
+    // return response.render('books/index', {title: 'Все книги', items: await store.select()})
+    const items = await repository.getBooks();
+    console.log('Ex3...', items);
+    return response.render('books/index', {title: 'Все книги', items: items})
 })
-router.get('/view/:id', async function (request, response) {
-    const book = await store.select(request.params.id);
+router.get('/view/:id', async function (request: any, response: any) {
+    // const book = await store.select(request.params.id);
+    const book = await repository.getBook(request.params.id)
     if (book) {
         await http.get(`http:counter/counter/${request.params.id}`, (res) => {
             const statusCode = res.statusCode;
@@ -44,10 +54,10 @@ router.get('/view/:id', async function (request, response) {
         post.write('');
         post.end();
 
-        function includeTemplate() {
+        const includeTemplate = function(): void {
             if (!io)
-                io = require('./../models/socket').createBookViewIO();
-            const data = {title: `Просмотр ${book.title}`, item: book};
+                io = socket.createBookViewIO()
+            const data = {title: `Просмотр ${book.title}`, item: book, user: undefined};
             if (request.isAuthenticated && request.isAuthenticated()) {
                 data.user = request.user.username;
             }
@@ -57,30 +67,35 @@ router.get('/view/:id', async function (request, response) {
         return response.status(404).render('404')
     }
 })
-router.get('/create', function (request, response) {
+
+router.get('/create', function (request: any, response: any) {
     return response.render('books/create', {title: 'Создание новой книги', fields: (new Book())})
 })
-router.post('/create', async function (request, response) {
-    await store.add(request.body);
+router.post('/create', async function (request: any, response: any) {
+    // await store.add(request.body);
+    await repository.createBook(request.body);
     return response.redirect(`/books`);
 })
-router.get('/update/:id', async function (request, response) {
-    const book = await store.select(request.params.id);
+router.get('/update/:id', async function (request: any, response: any) {
+    //const book = await store.select(request.params.id);
+    const book: Book | void = await repository.getBook(request.params.id);
     if (book) {
         return response.render('books/update', {title: `Просмотр ${book.title}`, item: book})
     }
     return response.status(404).render('404')
 })
-router.post('/update/:id', async function (request, response) {
-    const book = await store.select(request.params.id);
+router.post('/update/:id', async function (request: any, response: any) {
+    //const book = await store.select(request.params.id);
+    const book = await repository.getBook(request.params.id);
     if (book) {
         await book.update(request.body).save();
         return response.redirect(`/books`);
     }
     return response.status(404).render('404')
 })
-router.post('/delete/:id', async function (request, response) {
-    const book = await store.select(request.params.id);
+router.post('/delete/:id', async function (request: any, response: any) {
+    // const book = await store.select(request.params.id);
+    const book = await repository.getBook(request.params.id);
     if (book) {
         await book.delete();
         return response.redirect(`/books`);
@@ -88,4 +103,5 @@ router.post('/delete/:id', async function (request, response) {
     return response.status(404).render('404')
 })
 
-module.exports = router;
+
+export default router;

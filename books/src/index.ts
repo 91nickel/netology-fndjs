@@ -1,26 +1,27 @@
-const express = require('express');
-const http = require('http');
-const socketIO = require('socket.io');
-const indexRouter = require('./routes/index.js');
-const booksApiRouter = require('./routes/api/books.js');
-const userRouter = require('./routes/user.js');
-const booksRouter = require('./routes/books.js');
-const errorRouter = require('./routes/error.js');
-const userApiRouter = require('./routes/api/user.js');
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const {sessionDeclare, sessionMiddleware} = require('./middleware/session');
-const mongoose = require('mongoose');
+import express from 'express';
+import http from 'http';
+import {Socket} from 'socket.io';
+import indexRouter from './routes';
+import booksApiRouter from './routes/api/books';
+import userRouter from './routes/user';
+import booksRouter from './routes/books';
+import errorRouter from './routes/error';
+import userApiRouter from './routes/api/user';
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import {sessionDeclare, sessionMiddleware} from './middleware/session';
+import mongoose from 'mongoose';
 // const store = require('./models/store');
-const errorMiddleware = require('./middleware/error');
-// const {passport} = require('./middleware/passport');
+import errorMiddleware from './middleware/error';
 
+// const {passport} = require('./middleware/passport');
 // const booksRepository = require('./models/booksRepository');
 // booksRepository.getBooks().then((res) => console.log('RES: getBooks()', res));
 // booksRepository.getBook().then((res) => console.log('RES: getBook()', res));
 
 const app = express();
-const {server, io} = require('./models/socket').createServer(app);
+import {createServer} from './models/socket';
+const {server, io} = createServer(app);
 
 app.set('view engine', 'ejs');
 app.use(cookieParser());

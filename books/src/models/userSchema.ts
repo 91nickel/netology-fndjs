@@ -1,4 +1,5 @@
-const {Schema, model} = require('mongoose');
+import pkg from 'mongoose';
+const {Schema, model} = pkg;
 
 const UserSchema = new Schema({
     username: String,
@@ -8,4 +9,4 @@ const UserSchema = new Schema({
     session: String,
 })
 
-module.exports = model('UserSchema', UserSchema);
+export default model('UserSchema', UserSchema);

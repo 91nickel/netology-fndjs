@@ -1,13 +1,13 @@
-const multer = require('multer');
+import multer from 'multer';
 
 const storage = multer.diskStorage({
-    destination(req, file, cb) {
+    destination(req: any, file: any, cb: Function) {
         cb(null, 'public/img')
     },
-    filename(req, file, cb) {
+    filename(req: any, file: any, cb: Function) {
         cb(null, `${new Date().toISOString().replace(/:/g, '-')}-${file.originalname}`)
     }
 });
 
-module.exports = multer({storage});
+export default multer({storage});
 
