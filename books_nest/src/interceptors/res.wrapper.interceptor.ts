@@ -1,4 +1,5 @@
 import {
+    BadRequestException,
     CallHandler,
     ExecutionContext,
     HttpException,
@@ -29,8 +30,9 @@ export class ResWrapperInterceptor implements NestInterceptor {
             }),
             // @ts-ignore
             catchError((err) => {
-                response.status(HttpStatus.BAD_REQUEST);
-                return of({status: 'fail', data: err.message});
+                return throwError(new BadRequestException())
+                // response.status(HttpStatus.BAD_REQUEST);
+                // return of({status: 'fail', data: err.message});
                 // return throwError()
             }),
         )

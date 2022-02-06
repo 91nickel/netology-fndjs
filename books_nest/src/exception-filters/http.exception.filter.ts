@@ -1,7 +1,7 @@
-import {ExceptionFilter, Catch, ArgumentsHost, HttpException} from '@nestjs/common';
+import {ExceptionFilter, Catch, ArgumentsHost, HttpException, BadRequestException} from '@nestjs/common';
 import {Request, Response} from 'express';
 
-@Catch(HttpException)
+@Catch(BadRequestException)
 export class HttpExceptionFilter implements ExceptionFilter {
     catch(exception: HttpException, host: ArgumentsHost) {
         console.log('HttpExceptionFilter->catch()...');

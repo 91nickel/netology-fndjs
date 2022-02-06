@@ -30,6 +30,7 @@ export class BooksController {
     // @UsePipes(TestPipe)
     async getAll(): Promise<Book[] | void> {
         console.log(`BooksController->getAll()`);
+        throw new HttpException({'test': 'test'}, 403);
         return this.booksService.getBooks();
     }
     @Get('view/:id')
@@ -37,7 +38,6 @@ export class BooksController {
     // @UsePipes(TestPipe)
     async getOne(@Param('id', new TestPipe()) id: string): Promise<Book | void> {
         console.log(`BooksController->getOne(${id})`);
-        throw new HttpException({'test': 'test'}, 403);
         return this.booksService.getBook(id);
     }
     @Post('create')
