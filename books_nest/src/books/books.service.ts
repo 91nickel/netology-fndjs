@@ -1,6 +1,6 @@
 import {Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/mongoose";
-import {Schema, Model} from 'mongoose';
+import {Model} from 'mongoose';
 import {CreateBookDto} from "./dto/create-book.dto";
 import {UpdateBookDto} from "./dto/update-book.dto";
 import {Book, BookDocument} from './schemas/book.schema';
@@ -17,24 +17,6 @@ export interface IBooksService {
     deleteBook(id: string): Promise<Book | void>;
 }
 
-export interface IBook {
-    _id?: Schema.Types.ObjectId
-    title: string
-    description: string
-    authors: string
-    favorite: string
-    fileCover: string
-    fileName: string
-    fileBook: string
-    comments: object[]
-
-    update(fields: UpdateBookDto): Book
-
-    save(): Promise<Book>
-
-    delete(): Promise<Book>
-}
-
 @Injectable()
 export class BooksService implements IBooksService {
     @InjectModel(Book.name)
@@ -44,8 +26,9 @@ export class BooksService implements IBooksService {
     async createBook(createBookDto: CreateBookDto): Promise<Book | void> {
         console.log('BooksRepository.createBook()', createBookDto);
         try {
+            // return this.getBook('616de2b89c48aac7d9811895');
             const book = new this.bookModel(createBookDto);
-            console.log(book);
+            // console.log(book);
             return await book.save();
         } catch (error) {
             return console.error(error)
@@ -57,7 +40,7 @@ export class BooksService implements IBooksService {
         console.log('BooksRepository.getBook()', id);
         try {
             const book = await this.bookModel.findById(id);
-            console.log(book);
+            // console.log(book);
             return book;
         } catch (error) {
             return console.error(error)
@@ -69,7 +52,7 @@ export class BooksService implements IBooksService {
         console.log('BooksRepository.getBooks()...');
         try {
             const books = await this.bookModel.find().exec();
-            console.log(books);
+            // console.log(books);
             return books;
         } catch (error) {
             return console.error(error)
@@ -80,7 +63,7 @@ export class BooksService implements IBooksService {
     async updateBook(id: string, updateBookDto: UpdateBookDto): Promise<Book | void> {
         console.log('BooksRepository.updateBook()', id, updateBookDto);
         const book = await this.bookModel.findByIdAndUpdate(id, updateBookDto, {new: true});
-        console.log(book);
+        // console.log(book);
         return book;
     }
 
@@ -88,7 +71,7 @@ export class BooksService implements IBooksService {
     async deleteBook(id: string): Promise<Book | void> {
         console.log('BooksRepository.deleteBook()', id);
         const book = await this.bookModel.findByIdAndDelete(id);
-        console.log(book);
+        // console.log(book);
         return book;
     }
 }
