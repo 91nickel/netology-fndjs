@@ -7,8 +7,8 @@ import {
     Injectable,
     NestInterceptor,
 } from "@nestjs/common";
-import { map } from 'rxjs/operators';
-import { Request, Response } from 'express';
+import {map} from 'rxjs/operators';
+import {Request, Response} from 'express';
 
 import {Observable, throwError} from "rxjs";
 import {catchError, tap} from "rxjs/operators";
@@ -26,14 +26,11 @@ export class ResWrapperInterceptor implements NestInterceptor {
                 console.log(`After... ${Date.now() - now} ms`);
             }),
             map(data => {
+                // console.log('data', data)
                 return {status: 'success', data: data};
             }),
-            // @ts-ignore
             catchError((err) => {
-                return throwError(new BadRequestException())
-                // response.status(HttpStatus.BAD_REQUEST);
-                // return of({status: 'fail', data: err.message});
-                // return throwError()
+                return throwError(new BadRequestException(err.message))
             }),
         )
     }

@@ -12,8 +12,8 @@ services:
       DB_HOST: mongo
       DB_PORT: 27017
       DB_NAME: db
-      DB_USER: root
-      DB_PASS: 1234
+    env_file:
+      - .env
     ports:
       - 29999:29999
     volumes:

@@ -1,10 +1,10 @@
 import {Module} from '@nestjs/common';
 import {MongooseModule} from '@nestjs/mongoose';
 import {ConfigModule} from '@nestjs/config';
-
 import {AppController} from './app.controller';
 import {AppService} from './app.service';
 import {BooksModule} from './books/books.module';
+import { AuthModule } from './auth/auth.module';
 
 const dbConnectionString = `mongodb://${process.env.DB_HOST || 'mongo'}:${process.env.DB_PORT || 27017}`;
 const dbConnectionOptions = {
@@ -20,9 +20,9 @@ const dbConnectionOptions = {
         ConfigModule.forRoot(),
         MongooseModule.forRoot(dbConnectionString, dbConnectionOptions),
         BooksModule,
+        AuthModule,
     ],
     controllers: [AppController],
     providers: [AppService],
 })
-export class AppModule {
-}
+export class AppModule {}
