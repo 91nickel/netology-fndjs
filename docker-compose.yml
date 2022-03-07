@@ -16,6 +16,7 @@ services:
       - .env
     ports:
       - 29999:29999
+      - 8080:8080
     volumes:
 #      - ./books/:/www
       - ./books_nest/:/www

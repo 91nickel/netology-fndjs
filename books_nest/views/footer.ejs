@@ -1,0 +1,8 @@
+</div>
+</body>
+</html>
+<% if (typeof scripts !== 'undefined' && Array.isArray(scripts)) { %>
+    <% scripts.forEach(function (path) { %>
+        <script src="<%= path %>"></script>
+    <% }) %>
+<% } %>

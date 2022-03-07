@@ -6,7 +6,7 @@ import {
     HttpException,
     Param,
     Patch,
-    Post,
+    Post, Render, Res,
     UseInterceptors,
     UsePipes
 } from '@nestjs/common';
@@ -18,6 +18,7 @@ import {TestPipe} from "../pipes/test.pipe";
 import {CreateBookPipe} from '../pipes/create.book.pipe';
 import {JoiCreateBookPipe} from '../pipes/joi.create.book.pipe';
 import {CreateBookSchema} from "../joi/create.book.schema";
+import { Response } from 'express';
 
 @Controller('books')
 // @UseInterceptors(LoggingInterceptor)
@@ -30,7 +31,6 @@ export class BooksController {
     // @UsePipes(TestPipe)
     async getAll(): Promise<Book[] | void> {
         console.log(`BooksController->getAll()`);
-        throw new HttpException({'test': 'test'}, 403);
         return this.booksService.getBooks();
     }
     @Get('view/:id')
@@ -55,5 +55,19 @@ export class BooksController {
     async deleteOne(@Param('id') id: string): Promise<Book | void> {
         console.log(`BooksController->deleteOne(${id})`);
         return this.booksService.deleteBook(id);
+    }
+    @Get('show')
+    async viewAll(@Res() res: Response) {
+        console.log(`BooksController->viewAll()`);
+        const templateData = {title: 'Books View All', books: await this.booksService.getBooks()};
+        console.log('templateData', templateData);
+        return res.render('index', templateData);
+    }
+    @Get('show/:id')
+    async viewOne(@Param('id') id: string, @Res() res: Response) {
+        console.log(`BooksController->viewOne()`);
+        const templateData = {title: 'Books View one', item: await this.booksService.getBook(id)};
+        console.log('templateData', templateData);
+        return res.render('book', templateData);
     }
 }

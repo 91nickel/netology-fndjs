@@ -4,7 +4,9 @@ import {ConfigModule} from '@nestjs/config';
 import {AppController} from './app.controller';
 import {AppService} from './app.service';
 import {BooksModule} from './books/books.module';
-import { AuthModule } from './auth/auth.module';
+import {AuthModule} from './auth/auth.module';
+import {BookCommentModule} from './book-comment/book-comment.module';
+import {EventsModule} from './events/events.module';
 
 const dbConnectionString = `mongodb://${process.env.DB_HOST || 'mongo'}:${process.env.DB_PORT || 27017}`;
 const dbConnectionOptions = {
@@ -21,6 +23,8 @@ const dbConnectionOptions = {
         MongooseModule.forRoot(dbConnectionString, dbConnectionOptions),
         BooksModule,
         AuthModule,
+        BookCommentModule,
+        EventsModule,
     ],
     controllers: [AppController],
     providers: [AppService],
