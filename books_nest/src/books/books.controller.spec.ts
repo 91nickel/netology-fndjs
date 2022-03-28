@@ -1,18 +1,76 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { BooksController } from './books.controller';
+import request from 'supertest';
+import {Test, TestingModule} from '@nestjs/testing';
+import {BooksController} from './books.controller';
+import {getModelToken} from "@nestjs/mongoose";
+import {Book} from "./schemas/book.schema";
+import {BooksService} from "./books.service";
+import {INestApplication} from "@nestjs/common";
+import {BooksModule} from "./books.module";
 
 describe('BooksController', () => {
-  let controller: BooksController;
+    let app: INestApplication;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [BooksController],
-    }).compile();
+    let bookModel = {
 
-    controller = module.get<BooksController>(BooksController);
-  });
+    }
+    let booksService = {
+        getBooks: () => {
+            return ['test'];
+        },
+    };
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
+    beforeAll(async () => {
+        const moduleRef: TestingModule = await Test.createTestingModule({
+            providers: [
+                BooksService,
+                {
+                    provide: getModelToken(BooksService.name),
+                    useValue: booksService,
+                },
+                {
+                    provide: getModelToken(Book.name),
+                    useValue: bookModel,
+                },
+            ],
+        })
+            // .overrideProvider(BooksService)
+            // .useValue(booksService)
+            .compile();
+
+        app = moduleRef.createNestApplication();
+        await app.init();
+
+        // booksService = new BooksService();
+        // booksController = new BooksController(booksService);
+        // booksController = moduleRef.get<BooksController>(BooksController);
+        // booksService = await moduleRef.resolve<BooksService>(BooksService);
+    });
+
+    it(`/GET /books`, () => {
+        return request(app.getHttpServer())
+            .get('/books')
+            .expect(200)
+            .expect({
+                data: booksService.getBooks(),
+            });
+    });
+
+    afterAll(async () => {
+        await app.close();
+    });
+
+    // it('should be defined', () => {
+    //     expect(controller).toBeDefined();
+    // });
+
+    // describe('findAll', () => {
+    //     it('should return an array of books', async () => {
+    //         const result = new Promise((resolve, reject) => {
+    //             const result = ['test'];
+    //             resolve(result)
+    //         });
+    //         jest.spyOn(booksService, 'getBooks').mockImplementation(() => result);
+    //         expect(await booksController.getAll()).toBe(result);
+    //     });
+    // });
 });
