@@ -7,9 +7,15 @@ import {TestPipe} from "./pipes/test.pipe";
 import {HttpExceptionFilter} from "./exception-filters/http.exception.filter";
 import { join } from 'path';
 import {WsAdapter} from '@nestjs/platform-ws';
+import * as admin from 'firebase-admin';
+const serviceAccount = require("./../firebase.account.key.json");
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://netology-node-default-rtdb.europe-west1.firebasedatabase.app"
+  });
   app.useWebSocketAdapter(new WsAdapter(app));
   app.useStaticAssets(join(__dirname, '..', '/public/'));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));

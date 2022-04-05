@@ -4,8 +4,10 @@ import {Model} from 'mongoose';
 import {CreateBookDto} from "./dto/create-book.dto";
 import {UpdateBookDto} from "./dto/update-book.dto";
 import {Book, BookDocument} from './schemas/book.schema';
+import * as admin from 'firebase-admin';
 
 export interface IBooksService {
+
     createBook(book: CreateBookDto): Promise<Book | void>;
 
     getBook(id: string): Promise<Book | void>;
@@ -15,10 +17,12 @@ export interface IBooksService {
     updateBook(id: string, fields: UpdateBookDto): Promise<Book | void>;
 
     deleteBook(id: string): Promise<Book | void>;
+
 }
 
 @Injectable()
 export class BooksService implements IBooksService {
+
     @InjectModel(Book.name)
     private bookModel: Model<BookDocument>
 
@@ -74,7 +78,71 @@ export class BooksService implements IBooksService {
         // console.log(book);
         return book;
     }
+
+    //получение книги по id
+    async getBookFB(id: string): Promise<FirebaseFirestore.DocumentData | void> {
+        console.log('BooksRepository.getBookFB()', id);
+        try {
+            const doc = await admin.firestore().collection('books').doc(id).get();
+            return {id: doc.id, ...doc.data()}
+        } catch (error) {
+            return console.error(error)
+        }
+    }
+
+    //получение всех книг
+    async getBooksFB(): Promise<object[] | void> {
+        console.log('BooksRepository.getBooksFB()');
+        try {
+            const result = [];
+            const query = await admin.firestore().collection('books').get();
+            query.forEach(doc => {
+                result.push({id: doc.id, ...doc.data()})
+            })
+            return result;
+        } catch (error) {
+            return console.error(error)
+        }
+    }
+
+    // создание книги
+    async createBookFB(createBookDto: CreateBookDto): Promise<object | void> {
+        console.log('BooksRepository.createBookFB()', createBookDto);
+        try {
+            return await admin.firestore().collection('books').add(createBookDto);
+        } catch (error) {
+            return console.error(error)
+        }
+    }
+
+    // апдейт книги
+    async updateBookFB(id: string, updateBookDto: UpdateBookDto): Promise<object | void> {
+        console.log('BooksRepository.updateBookFB()', updateBookDto);
+        try {
+            const db = admin.firestore().collection('books');
+            const query = await db.doc(id).update(updateBookDto);
+            const book = await db.doc(id).get();
+            return {id: book.id, ...book.data()}
+        } catch (error) {
+            return console.error(error)
+        }
+    }
+
+    // удаление книги
+    async deleteBookFB(id: string): Promise<FirebaseFirestore.DocumentData | void> {
+        console.log('BooksRepository.deleteBookFB()', id);
+        try {
+            const db = admin.firestore().collection('books');
+            const query = await db.doc(id).get();
+            const book = {id: query.id, ...query.data()}
+            await db.doc(id).delete();
+            return book;
+        } catch (error) {
+            return console.error(error)
+        }
+    }
 }
+
 /*
 export class Book implements IBook {
     _id?: MongooseSchema.Types.ObjectId

@@ -71,3 +71,38 @@ export class BooksController {
         return res.render('book', templateData);
     }
 }
+
+@Controller('api/books')
+// @UseInterceptors(LoggingInterceptor)
+// @UseFilters(HttpExceptionFilter)
+export class ApiBooksController {
+
+    constructor(private readonly booksService: BooksService) {}
+
+    @Get()
+    async getAll(): Promise<object[] | void> {
+        console.log(`ApiBooksController->getAll()`);
+        return this.booksService.getBooksFB();
+    }
+    @Get('/:id')
+    async getOne(@Param('id') id: string): Promise<object | void> {
+        console.log(`ApiBooksController->getOne(${id})`);
+        return this.booksService.getBookFB(id);
+    }
+    @Post()
+    async createOne(@Body() body: CreateBookDto): Promise<object | void> {
+        console.log('ApiBooksController->createOne()', body);
+        console.log(`create one ${JSON.stringify(body)}`);
+        return this.booksService.createBookFB(body);
+    }
+    @Patch('/:id')
+    async updateOne(@Param('id') id: string, @Body() body: UpdateBookDto): Promise<object | void> {
+        console.log(`ApiBooksController->updateOne(${id}) ${JSON.stringify(body)}`);
+        return this.booksService.updateBookFB(id, body);
+    }
+    @Delete('/:id')
+    async deleteOne(@Param('id') id: string): Promise<object | void> {
+        console.log(`ApiBooksController->deleteOne(${id})`);
+        return this.booksService.deleteBookFB(id);
+    }
+}
