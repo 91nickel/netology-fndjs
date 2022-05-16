@@ -6,6 +6,7 @@ import {Model} from "mongoose";
 import {SignUpUserDto} from "../users/dto/sign-up-user.dto";
 import {SignInUserDto} from "../users/dto/sign-in-user.dto";
 import * as jwt from "jsonwebtoken";
+const admin = require("firebase-admin");
 
 @Injectable()
 export class AuthService {
