@@ -26,7 +26,6 @@ async function bootstrap() {
   app.use(bodyParser());
   app.use(cookieParser());
   app.use(csrf({cookie: true}));
-
   app.useWebSocketAdapter(new WsAdapter(app));
   app.useStaticAssets(join(__dirname, '..', '/public/'));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
