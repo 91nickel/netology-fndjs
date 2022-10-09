@@ -2,16 +2,9 @@ version: "2"
 
 services:
   books:
-#    build: docker/books
     image: node:14.17.6
     working_dir: /www
     entrypoint: sh /www/entrypoint.sh
-    environment:
-      PORT: 29999
-      NODE_ENV: development
-      DB_HOST: mongo
-      DB_PORT: 27017
-      DB_NAME: db
     env_file:
       - .env
     ports:
@@ -22,39 +15,6 @@ services:
     depends_on:
       - mongo
       - mongo-express
-
-#  books:
-#    build: docker/books
-#    working_dir: /www
-#    entrypoint: sh /www/entrypoint.sh
-#    environment:
-#      PORT: 29999
-#      NODE_ENV: development
-#      DB_HOST: mongo
-#      DB_PORT: 27017
-#      DB_NAME: db
-#      DB_USER: root
-#      DB_PASS: 1234
-#    ports:
-#      - 29999:29999
-#    volumes:
-#      - ./books/:/www
-#    depends_on:
-#      - mongo
-#      - mongo-express
-
-#  counter:
-#    image: node:14.17.6
-#    working_dir: /www
-#    entrypoint: sh /www/entrypoint.sh
-#    environment:
-#      PORT: 80
-#    env_file:
-#      - .env
-#    volumes:
-#      - ./counter/:/www
-#    depends_on:
-#      - books
 
   mongo:
     image: mongo:5.0.3

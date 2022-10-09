@@ -2,10 +2,10 @@ import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { AppModule } from './app.module';
 const cookieParser = require("cookie-parser");
-const bodyParser = require("body-parser");
 const csrf = require("csurf");
-
 import {join} from "path";
+// const bodyParser = require("body-parser");
+
 
 async function bootstrap() {
 
@@ -25,7 +25,7 @@ async function bootstrap() {
   // app.useGlobalFilters(new HttpExceptionFilter());
 
   app.setViewEngine('ejs');
-  const PORT = process.env.PORT || 3000
+  const PORT = process.env.NODE_PORT || 3000
   await app.listen(PORT);
 }
 bootstrap();
