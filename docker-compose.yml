@@ -18,8 +18,7 @@ services:
       - 29999:29999
       - 8080:8080
     volumes:
-#      - ./books/:/www
-      - ./books_nest/:/www
+      - ./hotels/:/www
     depends_on:
       - mongo
       - mongo-express
