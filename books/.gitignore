@@ -1,8 +1,0 @@
-index.js
-.idea/
-middleware/**/*.js
-models/**/*.js
-routes/**/*.js
-node_modules/
-public/img/
-dist/
