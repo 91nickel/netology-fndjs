@@ -1,7 +1,15 @@
 import { Schema as MongooseSchema } from 'mongoose'
 
-export class SearchReservationDto {
-    user: MongooseSchema.Types.ObjectId;
+type ID = MongooseSchema.Types.ObjectId;
+
+interface ReservationSearchOptions {
+    user: ID;
+    dateStart: Date;
+    dateEnd: Date;
+}
+
+export class SearchReservationDto implements ReservationSearchOptions {
+    user: ID;
     dateStart: Date;
     dateEnd: Date;
 }

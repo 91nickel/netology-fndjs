@@ -10,8 +10,6 @@ import { HotelRoom, HotelRoomSchema } from "../hotel-room/schema/hotel-room.sche
   imports: [
     MongooseModule.forFeature([
       {name: Hotel.name, schema: HotelSchema},
-    ]),
-    MongooseModule.forFeature([
       {name: HotelRoom.name, schema: HotelRoomSchema},
     ]),
   ],
