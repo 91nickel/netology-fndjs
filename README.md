@@ -2,6 +2,7 @@
 1. Загрузить ветку hotels репозитория  
 ```bash
     git clone -b hotels https://github.com/91nickel/netology-books.git netology-hotels
+    cd netology-hotels
 ```
 
 2. Заполнить файл .env переменными окружения
