@@ -1,23 +1,24 @@
 import { Prop, Schema, SchemaFactory }        from '@nestjs/mongoose'
 import { Document, Schema as MongooseSchema } from 'mongoose'
-import { Message } from './message.schema';
+import { Message, MessageDocument }           from './message.schema';
+import { User }                               from "../../user/schema/user.schema";
 
 export type SupportRequestDocument = SupportRequest & Document;
 
 @Schema()
 export class SupportRequest {
 
-    @Prop({type: MongooseSchema.Types.ObjectId})
-    readonly _id?: MongooseSchema.Types.ObjectId
+    // @Prop({type: MongooseSchema.Types.ObjectId})
+    // readonly _id?: MongooseSchema.Types.ObjectId
 
-    @Prop({type: MongooseSchema.Types.ObjectId})
-    user: MongooseSchema.Types.ObjectId
+    @Prop({type: MongooseSchema.Types.ObjectId, ref: User.name})
+    user: MongooseSchema.Types.ObjectId | string
 
     @Prop()
     createdAt: Date
 
     @Prop()
-    messages: Message[]
+    messages: MessageDocument[]
 
     @Prop()
     isActive: boolean

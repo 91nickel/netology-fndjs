@@ -1,14 +1,14 @@
 import { Prop, Schema, SchemaFactory }        from '@nestjs/mongoose'
 import { Document, Schema as MongooseSchema } from 'mongoose'
-import { Role }                               from '../dto/sign-up-user.dto'
+import { Role }                               from '../dto/user.dto'
 
 export type UserDocument = User & Document;
 
 @Schema()
 export class User {
 
-    @Prop({type: MongooseSchema.Types.ObjectId})
-    readonly _id?: MongooseSchema.Types.ObjectId
+    // @Prop({type: MongooseSchema.Types.ObjectId})
+    // readonly _id?: MongooseSchema.Types.ObjectId
 
     @Prop()
     email: string = ''

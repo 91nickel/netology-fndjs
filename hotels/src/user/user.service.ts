@@ -1,23 +1,20 @@
-import { Injectable }         from '@nestjs/common';
-import { InjectModel }        from "@nestjs/mongoose";
-import {
-    Model, Schema as MongooseSchema
-}                             from 'mongoose';
-import { User, UserDocument } from './schema/user.schema';
-import { SearchUserDto }      from './dto/search-user.dto';
-import { SignInUserDto }      from './dto/sign-in-user.dto';
-import { SignUpUserDto }      from './dto/sign-up-user.dto';
+import { Injectable }                                                          from '@nestjs/common';
+import { InjectModel }                                                         from "@nestjs/mongoose";
+import { Model, Schema as MongooseSchema }                                     from 'mongoose';
+import * as md5                                                                from "md5"
+import { User, UserDocument }                                                  from './schema/user.schema';
+import { Role, SignUpUserDto, SignInUserDto, SearchUserDto, SearchUserParams } from './dto/user.dto';
 
 type ID = string | MongooseSchema.Types.ObjectId;
 
 interface IUserService {
-    create(dto: SignUpUserDto): Promise<User>;
+    create(data: Partial<UserDocument>): Promise<UserDocument>;
 
-    findById(id: ID): Promise<User>;
+    findById(id: ID): Promise<UserDocument>;
 
-    findByEmail(email: string): Promise<User>;
+    findByEmail(email: string): Promise<UserDocument>;
 
-    findAll(params: SearchUserDto): Promise<User[]>;
+    findAll(params: SearchUserParams): Promise<UserDocument[]>;
 }
 
 @Injectable()
@@ -26,50 +23,47 @@ export class UserService implements IUserService {
     @InjectModel(User.name)
     private userModel: Model<UserDocument>
 
-    async create(dto: SignUpUserDto): Promise<User> {
-        console.log('UserService.create()', dto);
+    create(data: SignUpUserDto): Promise<UserDocument> {
+        console.log('UserService.create()', data);
         try {
-            const user = new this.userModel(dto);
-            return await user.save();
+            const fields = {...data, passwordHash: md5(data.password), role: Role.Client}
+            delete fields.password
+            const entity = new this.userModel(fields)
+            return entity.save()
         } catch (error) {
             console.error(error)
         }
     }
 
-    async findById(id: ID): Promise<User> {
+    findById(id: ID): Promise<UserDocument> {
         console.log('UserService.findById()', id);
         try {
-            const book = await this.userModel.findById(id);
-            console.log(book)
-            return book;
+            return this.userModel.findById(id).exec()
         } catch (error) {
             console.error(error)
         }
     }
 
-    async findByEmail(email: string): Promise<User> {
-        console.log('UserService.findByEmail()...');
+    findByEmail(email: string): Promise<UserDocument> {
+        console.log('UserService.findByEmail()...', email);
         try {
-            const user = await this.userModel.findOne({email: email}).exec();
-            console.log(user);
-            return user;
+            return this.userModel.findOne({email: email}).exec()
         } catch (error) {
             console.error(error)
         }
     }
 
-    async findAll(dto: SearchUserDto): Promise<User[]> {
-        console.log('UserService.findAll()...');
+    findAll(params: SearchUserDto): Promise<UserDocument[]> {
+        console.log('UserService.findAll()...', params);
         try {
-            if (dto.name)
-                dto.name = `/${dto.name}/i`;
-            if (dto.email)
-                dto.email = `/${dto.email}/i`;
-            if (dto.contactPhone)
-                dto.contactPhone = `/${dto.contactPhone}/i`;
-            const users = await this.userModel.find(dto).exec();
-            console.log(users);
-            return users;
+            const filter: Partial<SearchUserDto> = {}
+            if (params.name)
+                filter.name = `/${params.name}/i`
+            if (params.name)
+                filter.email = `/${params.email}/i`
+            if (params.name)
+                filter.contactPhone = `/${params.contactPhone}/i`
+            return this.userModel.find(filter).limit(params.limit).skip(params.offset).exec()
         } catch (error) {
             console.error(error)
         }

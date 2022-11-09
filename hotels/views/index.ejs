@@ -1,0 +1,42 @@
+<%- include("./header", {title: title}) %>
+<div class="row">
+    <div class="col-12">
+        <h1><%= title %></h1>
+    </div>
+    <div class="col-4">
+        <form action="/api/auth/login" method="POST">
+            <input type="hidden" name="email" value="client@mail.ru"/>
+            <input type="hidden" name="password" value="123456"/>
+            <button type="submit">Auth as client</button>
+        </form>
+    </div>
+    <div class="col-4">
+        <form action="/api/auth/login" method="POST">
+            <input type="hidden" name="email" value="manager@mail.ru"/>
+            <input type="hidden" name="password" value="123456"/>
+            <button type="submit">Auth as manager</button>
+        </form>
+    </div>
+    <div class="col-4">
+        <form action="/api/auth/login" method="POST">
+            <input type="hidden" name="email" value="admin@mail.ru"/>
+            <input type="hidden" name="password" value="123456"/>
+            <button type="submit">Auth as admin</button>
+        </form>
+    </div>
+    <div class="col-6 mt-5">
+        <h2>Subscribe to Support Request</h2>
+        <form id="subscribe" action="#" class="row">
+            <label class="col-12">
+                <textarea name="message" id="" rows="5" style="width: 100%" placeholder="Here will be message text" disabled></textarea>
+            </label>
+            <label class="col-12">Support Request ID
+                <input class="d-flex w-100" type="text" name="support-request-id"/>
+            </label>
+            <label class="col-12">
+                <button class="w-100" type="submit">Subscribe</button>
+            </label>
+        </form>
+    </div>
+</div>
+<%- include("./footer") %>

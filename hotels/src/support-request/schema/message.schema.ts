@@ -1,16 +1,17 @@
 import { Prop, Schema, SchemaFactory }        from '@nestjs/mongoose'
 import { Document, Schema as MongooseSchema } from 'mongoose'
+import { User }                               from "../../user/schema/user.schema";
 
 export type MessageDocument = Message & Document;
 
 @Schema()
 export class Message {
 
-    @Prop({type: MongooseSchema.Types.ObjectId})
-    readonly _id?: MongooseSchema.Types.ObjectId
+    // @Prop({type: MongooseSchema.Types.ObjectId})
+    // readonly _id?: MongooseSchema.Types.ObjectId
 
-    @Prop({type: MongooseSchema.Types.ObjectId})
-    author: MongooseSchema.Types.ObjectId
+    @Prop({type: MongooseSchema.Types.ObjectId, ref: User.name})
+    author: MongooseSchema.Types.ObjectId | string
 
     @Prop()
     text: string

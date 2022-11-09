@@ -1,16 +1,16 @@
-import { Injectable }                             from '@nestjs/common'
-import { Model, Schema as MongooseSchema }        from "mongoose"
-import { InjectModel }                            from "@nestjs/mongoose"
-import { SupportRequest, SupportRequestDocument } from "./schema/support-request.schema"
-import { Message, MessageDocument }               from "./schema/message.schema"
-import { MarkAsReadMessagesDto }                  from "./dto/support-request.dto"
+import { Injectable }                                   from '@nestjs/common'
+import { Model, Schema as MongooseSchema }              from "mongoose"
+import { InjectModel }                                  from "@nestjs/mongoose"
+import { SupportRequest, SupportRequestDocument }       from "./schema/support-request.schema"
+import { Message, MessageDocument }                     from "./schema/message.schema"
+import { MarkAsReadMessagesDto, MarkMessagesAsReadDto } from "./dto/support-request.dto"
 
 type ID = string | MongooseSchema.Types.ObjectId
 
 interface ISupportRequestEmployeeService {
-    markMessagesAsRead(params: MarkAsReadMessagesDto)
+    markMessagesAsRead(params: MarkMessagesAsReadDto)
 
-    getUnreadCount(supportRequest: ID): Promise<Message[]>
+    getUnreadCount(supportRequest: ID): Promise<MessageDocument[]>
 
     closeRequest(supportRequest: ID): Promise<void>
 }
@@ -28,19 +28,14 @@ export class SupportRequestEmployeeService implements ISupportRequestEmployeeSer
         console.log('SupportRequestEmployeeService.markMessagesAsRead()', dto)
         try {
             const request = await this.supportRequestModel.findOne({_id: dto.supportRequest, user: dto.user}).exec()
-            const messageIds: ID[] = Object.values(request.messages).reduce((prev, next) => {
-                return [...prev, next._id]
-            }, [])
-            const filter = {_id: {$in: messageIds}, dateCreate: {$lte: dto.createdBefore}}
-            const update = {readAt: new Date}
-            const result = await this.messageModel.updateMany(filter, update)
-            console.log(result)
+            const filter = {_id: {$in: request.messages}, dateCreate: {$lte: dto.createdBefore}}
+            return this.messageModel.updateMany(filter, {readAt: new Date})
         } catch (error) {
             console.error(error)
         }
     }
 
-    async getUnreadCount(requestId: ID): Promise<Message[]> {
+    async getUnreadCount(requestId: ID): Promise<MessageDocument[]> {
         console.log('SupportRequestEmployeeService.getUnreadCount()', requestId)
         try {
             const request = await this.supportRequestModel.findById(requestId).exec()
@@ -50,11 +45,11 @@ export class SupportRequestEmployeeService implements ISupportRequestEmployeeSer
         }
     }
 
-    async closeRequest(requestId: ID): Promise<void> {
+    closeRequest(requestId: ID): Promise<void> {
         console.log('SupportRequestEmployeeService.closeRequest()', requestId)
         try {
-            const request = await this.supportRequestModel.findByIdAndUpdate(requestId, {isActive: false}).exec()
-            return console.log(request)
+            return this.supportRequestModel.findByIdAndUpdate(requestId, {isActive: false}).exec().then(() => {
+            })
         } catch (error) {
             console.error(error)
         }

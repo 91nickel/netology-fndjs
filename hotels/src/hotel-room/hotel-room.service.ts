@@ -1,20 +1,21 @@
-import { Injectable }                      from '@nestjs/common';
-import { Model, Schema as MongooseSchema } from "mongoose";
-import { HotelRoom, HotelRoomDocument }    from './schema/hotel-room.schema';
-import { CreateHotelRoomDto }              from './dto/create-hotel-room.dto';
-import { SearchHotelRoomDto }              from './dto/search-hotel-room.dto';
-import { InjectModel }                     from "@nestjs/mongoose";
+import { Injectable }                              from '@nestjs/common'
+import { InjectModel }                             from "@nestjs/mongoose"
+import { Model, Schema as MongooseSchema }         from "mongoose"
+import { HotelRoom, HotelRoomDocument }                               from './schema/hotel-room.schema'
+import { CreateHotelRoomDto, SearchHotelRoomsDto, SearchRoomsParams } from './dto/hotel-room.dto'
+import { Request }                                                    from "express";
+import { UserDocument }                            from "../user/schema/user.schema";
 
 type ID = string | MongooseSchema.Types.ObjectId;
 
 interface IHotelRoomService {
-    create(dto: CreateHotelRoomDto): Promise<HotelRoom>;
+    create(data: Partial<HotelRoomDocument>): Promise<HotelRoomDocument>
 
-    findById(id: ID, isEnabled?: true): Promise<HotelRoom>;
+    findById(id: ID, isEnabled?: true): Promise<HotelRoomDocument>
 
-    search(dto: SearchHotelRoomDto): Promise<HotelRoom[]>;
+    search(params: SearchRoomsParams): Promise<HotelRoomDocument[]>
 
-    update(id: ID, data: Partial<CreateHotelRoomDto>): Promise<HotelRoom>;
+    update(id: ID, data: Partial<HotelRoomDocument>): Promise<HotelRoomDocument>
 }
 
 @Injectable()
@@ -23,50 +24,54 @@ export class HotelRoomService implements IHotelRoomService {
     @InjectModel(HotelRoom.name)
     private hotelRoomModel: Model<HotelRoomDocument>
 
-    async create(dto: CreateHotelRoomDto): Promise<HotelRoom> {
-        console.log('HotelRoomService.create()', dto);
+    create(data: CreateHotelRoomDto): Promise<HotelRoomDocument> {
+        console.log('HotelRoomService.create()', data)
         try {
-            const hotelRoom = await (new this.hotelRoomModel(dto)).save();
-            console.log(hotelRoom)
-            return hotelRoom;
+            return (new this.hotelRoomModel(data)).save()
         } catch (e) {
-            console.error(e);
+            console.error(e)
         }
     }
 
-    async findById(id: ID, isEnabled?: true): Promise<HotelRoom> {
-        console.log('HotelRoomService.findById()', id, isEnabled);
+    findById(id: ID, isEnabled?: true): Promise<HotelRoomDocument> {
+        console.log('HotelRoomService.findById()', id, isEnabled)
         try {
-            const searchParams: {_id: ID, isEnabled?: true} = {_id: id};
+            const filter: any = {_id: id}
             if (isEnabled)
-                searchParams.isEnabled = true;
-            const hotelRoom = await this.hotelRoomModel.findOne(searchParams).exec();
-            console.log(hotelRoom)
-            return hotelRoom;
+                filter.isEnabled = true
+            return this.hotelRoomModel.findOne(filter).exec()
         } catch (e) {
-            console.error(e);
+            console.error(e)
         }
     }
 
-    async search(dto: SearchHotelRoomDto): Promise<HotelRoom[]> {
-        console.log('HotelRoomService.search()');
+    search(params: SearchHotelRoomsDto): Promise<HotelRoomDocument[]> {
+        console.log('HotelRoomService.find()', params)
         try {
-            const hotelRooms = await this.hotelRoomModel.find(dto).exec();
-            console.log(hotelRooms)
-            return hotelRooms;
+            const filter: any = {hotel: params.hotel};
+            if (params.isEnabled)
+                filter.isEnabled = true;
+            return this.hotelRoomModel.find(filter).limit(params.limit).skip(params.offset).exec()
         } catch (e) {
-            console.error(e);
+            console.error(e)
         }
     }
 
-    async update(id: ID, dto: Pick<CreateHotelRoomDto, 'title' | 'description' | 'images' | 'isEnabled'>): Promise<HotelRoom> {
-        console.log('HotelRoomService.update()');
+    async update(id: ID, data: Partial<CreateHotelRoomDto>): Promise<HotelRoomDocument> {
+        console.log('HotelRoomService.update()', id, data)
         try {
-            const hotelRoom = await this.hotelRoomModel.findByIdAndUpdate(id, dto).exec();
-            console.log(hotelRoom)
-            return hotelRoom;
+            return this.hotelRoomModel.findByIdAndUpdate(id, data).exec()
         } catch (e) {
-            console.error(e);
+            console.error(e)
+        }
+    }
+
+    find(filter: any): Promise<HotelRoomDocument[]> {
+        console.log('HotelRoomService.find()', filter)
+        try {
+            return this.hotelRoomModel.find(filter).exec()
+        } catch (e) {
+            console.error(e)
         }
     }
 

@@ -2,48 +2,48 @@ import { Model, Schema as MongooseSchema } from "mongoose"
 
 type ID = MongooseSchema.Types.ObjectId
 
-interface ICreateSupportRequestDto {
+export interface CreateSupportRequestDto {
     user: ID
     text: string
 }
 
-export class CreateSupportRequestDto implements ICreateSupportRequestDto {
+export class CreateSupportReqDto implements CreateSupportRequestDto {
     user: ID
     text: string
 }
 
-interface ISendMessageDto {
+export interface SendMessageDto {
     author: ID
     supportRequest: ID
     text: string
 }
 
-export class SendMessageDto implements ISendMessageDto {
+export class SendMsgDto implements SendMessageDto {
     author: ID
     supportRequest: ID
     text: string
 }
 
-interface IMarkAsReadMessagesDto {
+export interface MarkMessagesAsReadDto {
     user: ID
     supportRequest: ID
     createdBefore: Date
 }
 
-export class MarkAsReadMessagesDto implements IMarkAsReadMessagesDto {
+export class MarkAsReadMessagesDto implements MarkMessagesAsReadDto {
     user: ID
     supportRequest: ID
     createdBefore: Date
 }
 
-interface IListSupportRequestDto {
-    user: ID | null
+export interface GetChatListParams {
+    user?: ID | string
     isActive: boolean
 }
 
-export class ListSupportRequestsDto implements IListSupportRequestDto {
-    user: ID | null
+export class FindSupportRequestsDto implements GetChatListParams {
+    user?: ID | string
     isActive: boolean
-    limit: string
-    offset: string
+    limit: number
+    offset: number
 }

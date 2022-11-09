@@ -1,52 +1,92 @@
-import { Injectable }                       from '@nestjs/common';
+import { BadRequestException, Injectable }  from '@nestjs/common';
 import { InjectModel }                      from "@nestjs/mongoose";
 import { Model, Schema as MongooseSchema }  from 'mongoose';
 import { Reservation, ReservationDocument } from './schema/reservation.schema';
-import { CreateReservationDto }             from './dto/create-reservation.dto';
-import { SearchReservationDto }             from './dto/search-reservation.dto';
+import {
+    CreateReservationDto,
+    ReservationDto,
+    ReservationSearchOptions,
+    SearchReservationDto
+}                                           from './dto/reservation.dto';
 
 type ID = string | MongooseSchema.Types.ObjectId;
 
 interface IReservation {
-    addReservation(dto: CreateReservationDto): Promise<Reservation>;
+    addReservation(data: ReservationDto): Promise<ReservationDocument>;
 
     removeReservation(id: ID): Promise<void>;
 
-    getReservations(dto: SearchReservationDto): Promise<Array<Reservation>>;
+    getReservations(filter: ReservationSearchOptions): Promise<Array<ReservationDocument>>;
 }
 
 @Injectable()
-export class ReservationService {
+export class ReservationService implements IReservation {
+
     @InjectModel(Reservation.name)
     private reservationModel: Model<ReservationDocument>
 
-    async addReservation(dto: CreateReservationDto): Promise<Reservation> {
-        console.log('ReservationService.addReservation()')
+    async addReservation(dto: CreateReservationDto): Promise<ReservationDocument> {
+        console.log('ReservationService.addReservation()', dto)
         try {
-            const reservation = await (new this.reservationModel(dto)).save()
-            console.log(reservation)
-            return reservation
+            const filter = {
+                dateStart: {'$gte': `${dto.dateStart.getFullYear()}-${dto.dateStart.getMonth() + 1}-${dto.dateStart.getDate()}`},
+                dateEnd: {'$lte': `${dto.dateEnd.getFullYear()}-${dto.dateEnd.getMonth() + 1}-${dto.dateEnd.getDate()}`},
+                roomId: dto.room,
+            }
+            const sameReservations = await this.reservationModel.find(filter)
+
+            if (sameReservations.length)
+                throw new BadRequestException('Room is reserved on this dates')
+
+            const fields: Partial<ReservationDocument> = {
+                userId: dto.user,
+                hotelId: dto.hotel,
+                roomId: dto.room,
+                dateStart: dto.dateStart,
+                dateEnd: dto.dateEnd,
+            }
+
+            return (new this.reservationModel(fields)).save()
+        } catch (e) {
+            console.error(e)
+            throw e
+        }
+    }
+
+    removeReservation(id: ID): Promise<void> {
+        console.log('ReservationService.removeReservation()', id)
+        try {
+            return this.reservationModel.findByIdAndRemove(id).exec().then(() => {
+            })
         } catch (e) {
             console.error(e)
         }
     }
 
-    async removeReservation(id: ID): Promise<void> {
-        console.log('ReservationService.removeReservation()')
+    getReservations(dto: SearchReservationDto): Promise<ReservationDocument[]> {
+        console.log('ReservationService.getReservations()', dto)
         try {
-            const reservation = await this.reservationModel.findByIdAndRemove(id).exec()
-            console.log(reservation)
+            const filter: any = {}
+            if (dto.dateStart)
+                filter.dateStart = {$gte: `${dto.dateStart.getFullYear()}-${dto.dateStart.getMonth() + 1}-${dto.dateStart.getDate()}`}
+            if (dto.dateEnd)
+                filter.dateEnd = {$lte: `${dto.dateEnd.getFullYear()}-${dto.dateEnd.getMonth() + 1}-${dto.dateEnd.getDate()}`}
+            if (dto.user)
+                filter.userId = dto.user
+            if (dto.hotel)
+                filter.hotelId = dto.hotel
+            if (dto.room)
+                filter.roomId = dto.room
+            return this.reservationModel.find(filter).exec()
         } catch (e) {
             console.error(e)
         }
     }
 
-    async getReservations(dto: SearchReservationDto): Promise<Reservation[]> {
-        console.log('ReservationService.getReservations()')
+    findById(id: ID): Promise<ReservationDocument> {
+        console.log('ReservationService.findById()', id)
         try {
-            const reservations = await this.reservationModel.find(dto).exec()
-            console.log(reservations)
-            return reservations
+            return this.reservationModel.findById(id).exec()
         } catch (e) {
             console.error(e)
         }

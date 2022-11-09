@@ -1,22 +1,23 @@
-import { Injectable }                             from '@nestjs/common'
-import { InjectModel }                            from "@nestjs/mongoose"
-import { Model, Schema as MongooseSchema }        from "mongoose"
-import { SupportRequest, SupportRequestDocument } from "./schema/support-request.schema"
-import { Message, MessageDocument }               from "./schema/message.schema"
-import { SendMessageDto, ListSupportRequestsDto } from "./dto/support-request.dto"
+import { Injectable }                                                            from '@nestjs/common'
+import { InjectModel }                                                           from "@nestjs/mongoose"
+import { EventEmitter2 }                                                         from '@nestjs/event-emitter'
+import { Model, Schema as MongooseSchema }                                       from "mongoose"
+import { SupportRequest, SupportRequestDocument }                                from "./schema/support-request.schema"
+import { Message, MessageDocument }                                              from "./schema/message.schema"
+import { SendMsgDto, FindSupportRequestsDto, GetChatListParams, SendMessageDto } from "./dto/support-request.dto"
 
 type ID = string | MongooseSchema.Types.ObjectId
 
 interface ISupportRequestService {
 
-    findSupportRequests(params: ListSupportRequestsDto): Promise<SupportRequest[]>
+    findSupportRequests(params: GetChatListParams): Promise<SupportRequest[]>
 
-    sendMessage(data: SendMessageDto): Promise<Message>
+    sendMessage(data: SendMessageDto): Promise<MessageDocument>
 
-    getMessages(supportRequest: ID): Promise<Message[]>
+    getMessages(supportRequest: ID): Promise<MessageDocument[]>
 
     subscribe(
-        handler: (supportRequest: SupportRequest, message: Message) => void
+        handler: (supportRequest: SupportRequestDocument, message: MessageDocument) => void
     ): () => void
 
 }
@@ -30,42 +31,70 @@ export class SupportRequestService implements ISupportRequestService {
     @InjectModel(Message.name)
     private messageModel: Model<MessageDocument>
 
-    async findSupportRequests(dto: ListSupportRequestsDto): Promise<SupportRequest[]> {
+    constructor(
+        private eventEmitter: EventEmitter2,
+    ) {
+    }
+
+    findSupportRequests(dto: FindSupportRequestsDto): Promise<SupportRequestDocument[]> {
         console.log('SupportRequestService.findSupportRequests()', dto)
+        const filter: any = {}
+        if (dto.user)
+            filter.user = dto.user
+        if (Object.keys(dto).includes('isActive'))
+            filter.isActive = dto.isActive
         try {
-            const requests = this.supportRequestModel.find(dto).exec()
-            console.log(requests)
-            return requests
+            return this.supportRequestModel.find(filter).limit(dto.limit).skip(dto.offset).exec()
         } catch (error) {
             console.error(error)
         }
     }
 
-    async sendMessage(dto: SendMessageDto): Promise<Message> {
+    async sendMessage(dto: SendMsgDto): Promise<MessageDocument> {
         console.log('SupportRequestService.sendMessage()', dto)
         try {
-            const message = new this.messageModel(dto)
-            console.log(message)
-            return await message.save()
+            const supportRequest = await this.supportRequestModel.findById(dto.supportRequest)
+            const message = new this.messageModel({...dto, sentAt: (new Date), readAt: null})
+            await message.save()
+            supportRequest.messages = [...supportRequest.messages, message._id]
+            await supportRequest.save()
+            this.eventEmitter.emit('message.sent', supportRequest, message)
+            return message
         } catch (error) {
             console.error(error)
         }
     }
 
-    async getMessages(id: ID): Promise<Message[]> {
-        console.log('SupportRequestService.getMessages()', id)
+    async getMessages(supportRequestId: ID): Promise<MessageDocument[]> {
+        console.log('SupportRequestService.getMessages()', supportRequestId)
         try {
-            const request = await this.supportRequestModel.findById(id).exec()
-            console.log(request)
-            return request.messages
+            const supportRequest = await this.supportRequestModel.findById(supportRequestId)
+            return this.messageModel.find({_id: supportRequest.messages}).exec()
         } catch (error) {
             console.error(error)
         }
     }
 
-    subscribe(handler: (supportRequest: SupportRequest, message: Message) => void): () => void {
+    subscribe(handler: (supportRequest: SupportRequestDocument, message: MessageDocument) => void): () => void {
+        console.log('SupportRequestService.subscribe()', handler)
+        this.eventEmitter.addListener('message.sent', handler)
         return () => {
+        }
+    }
 
+    unsubscribe(handler: (supportRequest: SupportRequestDocument, message: MessageDocument) => void): () => void {
+        console.log('SupportRequestService.unsubscribe()', handler)
+        this.eventEmitter.removeListener('message.sent', handler)
+        return () => {
+        }
+    }
+
+    getSupportRequestById(id: ID) {
+        console.log('SupportRequestService.getSupportRequestById()', id)
+        try {
+            return this.supportRequestModel.findById(id).exec()
+        } catch (error) {
+            console.error(error)
         }
     }
 

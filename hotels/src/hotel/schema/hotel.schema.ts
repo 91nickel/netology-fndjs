@@ -5,8 +5,8 @@ export type HotelDocument = Hotel & Document;
 
 @Schema()
 export class Hotel {
-    @Prop({type: MongooseSchema.Types.ObjectId})
-    readonly _id?: MongooseSchema.Types.ObjectId
+    // @Prop({type: MongooseSchema.Types.ObjectId})
+    // readonly _id?: MongooseSchema.Types.ObjectId
 
     @Prop()
     title: string

@@ -1,17 +1,19 @@
 import { Injectable }                      from '@nestjs/common';
 import { Hotel, HotelDocument }            from './schema/hotel.schema';
 import { Model, Schema as MongooseSchema } from "mongoose";
-import { CreateHotelDto }                  from './dto/create-hotel.dto'
+import { CreateHotelDto, SearchHotelsDto } from './dto/hotel.dto'
 import { InjectModel }                     from "@nestjs/mongoose";
+import { Request }                         from "express";
+import { UserDocument }                    from "../user/schema/user.schema";
 
 type ID = string | MongooseSchema.Types.ObjectId;
 
 interface IHotelService {
-    create(dto: CreateHotelDto): Promise<Hotel>;
+    create(data: any): Promise<HotelDocument>;
 
-    findById(id: ID): Promise<Hotel>;
+    findById(id: ID): Promise<HotelDocument>;
 
-    search(params: Pick<Hotel, "title">): Promise<Hotel[]>;
+    search(params: Pick<HotelDocument, 'title'>): Promise<HotelDocument[]>;
 }
 
 @Injectable()
@@ -20,35 +22,40 @@ export class HotelService implements IHotelService {
     @InjectModel(Hotel.name)
     private hotelModel: Model<HotelDocument>
 
-    async create(dto: CreateHotelDto): Promise<Hotel> {
-        console.log('HotelService.create()', dto);
+    create(data: CreateHotelDto): Promise<HotelDocument> {
+        console.log('HotelService.create()', data)
         try {
-            const hotel = new this.hotelModel(dto);
-            return await hotel.save();
+            return (new this.hotelModel(data)).save()
         } catch (error) {
             console.error(error)
         }
     }
 
-    async findById(id: ID): Promise<Hotel> {
+    findById(id: ID): Promise<HotelDocument> {
         console.log('HotelService.findById()', id);
         try {
-            const hotel = await this.hotelModel.findById(id);
-            console.log(hotel)
-            return hotel;
+            return this.hotelModel.findById(id).exec();
         } catch (error) {
             console.error(error)
         }
     }
 
-    async search(params: Pick<Hotel, "title">): Promise<Hotel[]> {
+    search(params: Pick<HotelDocument, 'title'>): Promise<HotelDocument[]> {
         console.log('HotelService.search()', params);
         try {
-            const hotels = await this.hotelModel.find({title: params.title});
-            console.log(hotels)
-            return hotels;
+            return this.hotelModel.find(params).exec()
         } catch (error) {
             console.error(error)
         }
     }
+
+    async find(filter: any, limit = 50, offset = 0): Promise<HotelDocument[]> {
+        console.log('HotelService.find()', filter);
+        try {
+            return await this.hotelModel.find(filter).limit(limit).skip(offset).exec();
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
 }

@@ -2,7 +2,6 @@ import { Module }                               from '@nestjs/common';
 import { MongooseModule }                       from "@nestjs/mongoose";
 import { Message, MessageSchema }               from "./schema/message.schema";
 import { SupportRequest, SupportRequestSchema } from "./schema/support-request.schema";
-import { SupportRequestController } from './support-request.controller';
 import { SupportRequestService }                from './support-request.service';
 import { SupportRequestClientService }          from './support-request-client.service';
 import { SupportRequestEmployeeService }        from './support-request-employee.service';
@@ -19,7 +18,7 @@ import { SupportRequestEmployeeService }        from './support-request-employee
         SupportRequestClientService,
         SupportRequestEmployeeService,
     ],
-    controllers: [SupportRequestController],
+    controllers: [],
 })
 export class SupportRequestModule {
 }

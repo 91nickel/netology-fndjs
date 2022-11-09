@@ -1,12 +1,28 @@
 import {
     Controller,
-    Body, Query, Param,
+    Body,
+    Query,
+    Param,
     HttpException,
-    Delete, Get, Patch, Post, Render, Res, Req, Put,
-}                        from '@nestjs/common';
-import { UserService }         from "./user.service";
-import { Role, SignUpUserDto } from "./dto/sign-up-user.dto";
-import { SearchUserDto }       from "./dto/search-user.dto";
+    Delete,
+    Get,
+    Patch,
+    Post,
+    Render,
+    Res,
+    Req,
+    Put,
+    UseGuards,
+    UnauthorizedException,
+    ForbiddenException,
+    BadRequestException, NotFoundException, HttpCode,
+}                                           from '@nestjs/common';
+import { UserService }                                         from "./user.service";
+import { Role, SignUpUserDto, SearchUserDto, RequestWithUser } from "./dto/user.dto";
+import { JoiUserPipe }                                         from "../pipe/user.pipe";
+import { CreateUserSchema, FindUserSchema } from "../joi/user.schema";
+import { Request, Response }                from "express";
+import { UserDocument }                     from "./schema/user.schema";
 
 @Controller()
 export class UserController {
@@ -15,56 +31,65 @@ export class UserController {
     ) {
     }
 
+    @HttpCode(200)
     @Post('api/admin/users/')
-    createUser(@Body() body: SignUpUserDto) {
-        /*
-        TODO: Позволяет пользователю с ролью admin создать пользователя в системе.
-            Формат ответа
-            {
-              "id": string,
-              "email": string,
-              "name": string,
-              "contactPhone": string,
-              "role": string
-            }
-            Доступно только пользователям с ролью admin.
-            401 - если пользователь не аутентифицирован;
-            403 - если роль пользователя не admin.
-        */
-        console.log('UserController.createUser');
-        return `UserController.createUser(${JSON.stringify(body)})`;
+    async createUser(
+        @Req() request: RequestWithUser,
+        @Res() response: Response,
+        @Body(new JoiUserPipe(CreateUserSchema)) body: SignUpUserDto
+    ) {
+        console.log('UserController.createUser', request.user);
+        if (!request.user)
+            throw new UnauthorizedException('You are not authorized')
+        if (request.user.role !== Role.Admin)
+            throw new ForbiddenException('Access denied')
+
+        const user = await this.userService.findByEmail(body.email)
+        if (user) {
+            throw new BadRequestException(`User with email ${body.email} already registered`);
+        }
+        const result = await this.userService.create(body);
+        result.id = result._id.toString();
+        delete result._id;
+        return response.send(result);
     }
 
+    @HttpCode(200)
     @Get('api/:role/users/')
-    getUsers(@Param('role') role: Role, @Query() query: SearchUserDto) {
-        /*
-        TODO: Позволяет пользователю с ролью admin создать пользователя в системе.
-            Query-параметры
-            limit - количество записей в ответе;
-            offset - сдвиг от начала списка;
-            name - фильтр по полю;
-            email - фильтр по полю;
-            contactPhone - фильтр по полю.
-            Формат ответа
-            [
-              {
-                "id": string,
-                "email": string,
-                "name": string,
-                "contactPhone": string
-              }
-            ]
-            GET /api/admin/users/
-            Доступно только пользователям с ролью admin.
-            *
-            GET /api/manager/users/
-            Доступно только пользователям с ролью manager.
-            *
-            401 - если пользователь не аутентифицирован;
-            403 - если роль пользователя не подходит.
-        */
-        console.log('UserController.createUser');
-        return `UserController.createUser(${role}, ${JSON.stringify(query)})`;
+    async getUsers(
+        @Req() request: RequestWithUser,
+        @Res() response: Response,
+        @Param('role') role: Role,
+        @Query(new JoiUserPipe(FindUserSchema)) query: SearchUserDto
+    ) {
+        console.log('UserController.getUsers', role, query, request.user)
+
+        if (role !== Role.Admin && role !== Role.Manager)
+            throw new NotFoundException('Not found')
+        if (!request.user)
+            throw new UnauthorizedException('You must be authorized')
+        if (role === Role.Admin && request.user.role !== Role.Admin)
+            throw new ForbiddenException('You must be authorized as admin')
+        if (role === Role.Manager && !(request.user.role === Role.Admin || request.user.role === Role.Manager))
+            throw new ForbiddenException('You must be authorized as manager or admin')
+
+        const dto = {
+            limit: query.limit ? query.limit : 50,
+            offset: query.offset ? query.offset : 0,
+            name: query.name ? query.name : undefined,
+            email: query.email ? query.email : undefined,
+            contactPhone: query.contactPhone ? query.contactPhone : undefined,
+        }
+        const result = (await this.userService.findAll(dto)).map(el => {
+            return {
+                id: el._id.toString(),
+                email: el.email,
+                name: el.name,
+                contactPhone: el.contactPhone
+            }
+        })
+
+        return response.send(result);
     }
 
 }
