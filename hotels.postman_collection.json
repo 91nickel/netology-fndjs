@@ -1,0 +1,902 @@
+{
+	"info": {
+		"_postman_id": "047b49c8-66ab-4610-a9d8-41b3f2ec04e4",
+		"name": "Hotels",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17598114"
+	},
+	"item": [
+		{
+			"name": "api-auth.loginAsClient",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"client@mail.ru\",\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://test2.foroffice.ru/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"test2",
+						"foroffice",
+						"ru"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api-auth.loginAsManager",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"manager@mail.ru\",\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://test2.foroffice.ru/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"test2",
+						"foroffice",
+						"ru"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api-auth.loginAsAdmin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"admin@mail.ru\",\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://test2.foroffice.ru/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"test2",
+						"foroffice",
+						"ru"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/auth/register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"user@mail.ru\",\r\n    \"password\": \"123456\",\r\n    \"name\": \"user\",\r\n    \"contactPhone\": \"+79999999999\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://test2.foroffice.ru/api/auth/register",
+					"protocol": "http",
+					"host": [
+						"test2",
+						"foroffice",
+						"ru"
+					],
+					"path": [
+						"api",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/auth/logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"nikita@foroffice.ru\",\r\n    \"password\": \"1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://test2.foroffice.ru/api/auth/logout",
+					"protocol": "http",
+					"host": [
+						"test2",
+						"foroffice",
+						"ru"
+					],
+					"path": [
+						"api",
+						"auth",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/common/hotel-rooms (by hotelId)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"Гостиница 1\",\r\n  \"description\": \"Описание гостиницы 1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://test2.foroffice.ru/api/common/hotel-rooms?hotel=63613467e74e8190567fa732&limit=50&offset=0",
+					"protocol": "http",
+					"host": [
+						"test2",
+						"foroffice",
+						"ru"
+					],
+					"path": [
+						"api",
+						"common",
+						"hotel-rooms"
+					],
+					"query": [
+						{
+							"key": "hotel",
+							"value": "63613467e74e8190567fa732"
+						},
+						{
+							"key": "limit",
+							"value": "50"
+						},
+						{
+							"key": "offset",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/common/hotel-rooms/:id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://test2.foroffice.ru/api/common/hotel-rooms/636159cc3f0031b1b66a5218",
+					"protocol": "http",
+					"host": [
+						"test2",
+						"foroffice",
+						"ru"
+					],
+					"path": [
+						"api",
+						"common",
+						"hotel-rooms",
+						"636159cc3f0031b1b66a5218"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/admin/hotels/ (create)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"Гостиница 4\",\r\n  \"description\": \"Описание гостиницы 4\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://test2.foroffice.ru/api/admin/hotels/",
+					"protocol": "http",
+					"host": [
+						"test2",
+						"foroffice",
+						"ru"
+					],
+					"path": [
+						"api",
+						"admin",
+						"hotels",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/admin/hotels",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"Гостиница 1\",\r\n  \"description\": \"Описание гостиницы 1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://test2.foroffice.ru/api/admin/hotels?limit=50&offset=0",
+					"protocol": "http",
+					"host": [
+						"test2",
+						"foroffice",
+						"ru"
+					],
+					"path": [
+						"api",
+						"admin",
+						"hotels"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "50"
+						},
+						{
+							"key": "offset",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/admin/hotels/ (update)",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"Гостиница 4 edited\",\r\n  \"description\": \"Описание гостиницы 4 edited\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://test2.foroffice.ru/api/admin/hotels/636975cbb809218e1b73dc05",
+					"protocol": "http",
+					"host": [
+						"test2",
+						"foroffice",
+						"ru"
+					],
+					"path": [
+						"api",
+						"admin",
+						"hotels",
+						"636975cbb809218e1b73dc05"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/admin/hotel-rooms/ (create)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "Номер 1/2",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Описание номер 1/2",
+							"type": "text"
+						},
+						{
+							"key": "hotelId",
+							"value": "63613471e74e8190567fa735",
+							"type": "text"
+						},
+						{
+							"key": "images",
+							"type": "file",
+							"src": "/C:/Users/User Name/Desktop/1540664869176961111.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://test2.foroffice.ru/api/admin/hotel-rooms/",
+					"protocol": "http",
+					"host": [
+						"test2",
+						"foroffice",
+						"ru"
+					],
+					"path": [
+						"api",
+						"admin",
+						"hotel-rooms",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/admin/hotel-rooms/:id (update)",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "Номер 1/2 edited",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Описание номер 1/2 edited",
+							"type": "text"
+						},
+						{
+							"key": "hotelId",
+							"value": "63613471e74e8190567fa735",
+							"type": "text"
+						},
+						{
+							"key": "images",
+							"type": "file",
+							"src": "/C:/Users/User Name/Desktop/cat.jpg"
+						},
+						{
+							"key": "images[]",
+							"value": "/hotel-room/6f322e430d3b7eca8e7b3a88f031eddd.jpg",
+							"type": "text"
+						},
+						{
+							"key": "isEnabled",
+							"value": "true",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://test2.foroffice.ru/api/admin/hotel-rooms/636976b3b809218e1b73dc0e",
+					"protocol": "http",
+					"host": [
+						"test2",
+						"foroffice",
+						"ru"
+					],
+					"path": [
+						"api",
+						"admin",
+						"hotel-rooms",
+						"636976b3b809218e1b73dc0e"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/client/reservations/ (create)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"hotelRoom\": \"636159cc3f0031b1b66a5218\",\r\n    \"startDate\": \"11.09.2022\",\r\n    \"endDate\": \"11.10.2022\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://test2.foroffice.ru/api/client/reservations/",
+					"protocol": "http",
+					"host": [
+						"test2",
+						"foroffice",
+						"ru"
+					],
+					"path": [
+						"api",
+						"client",
+						"reservations",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/client/reservations/",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"hotelRoom\": \"636159cc3f0031b1b66a5218\",\r\n    \"startDate\": \"11.02.2022\",\r\n    \"endDate\": \"11.02.2022\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://test2.foroffice.ru/api/client/reservations/",
+					"protocol": "http",
+					"host": [
+						"test2",
+						"foroffice",
+						"ru"
+					],
+					"path": [
+						"api",
+						"client",
+						"reservations",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/client/reservations/:id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"hotelRoom\": \"636159cc3f0031b1b66a5218\",\r\n    \"startDate\": \"11.02.2022\",\r\n    \"endDate\": \"11.02.2022\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://test2.foroffice.ru/api/client/reservations/636977e6b809218e1b73dc23",
+					"protocol": "http",
+					"host": [
+						"test2",
+						"foroffice",
+						"ru"
+					],
+					"path": [
+						"api",
+						"client",
+						"reservations",
+						"636977e6b809218e1b73dc23"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/manager/reservations/:userId",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"hotelRoom\": \"636159cc3f0031b1b66a5218\",\r\n    \"startDate\": \"11.02.2022\",\r\n    \"endDate\": \"11.02.2022\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://test2.foroffice.ru/api/manager/reservations/6356d3aa461d5fee798f597a",
+					"protocol": "http",
+					"host": [
+						"test2",
+						"foroffice",
+						"ru"
+					],
+					"path": [
+						"api",
+						"manager",
+						"reservations",
+						"6356d3aa461d5fee798f597a"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/manager/reservations/:userId/:id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"hotelRoom\": \"636159cc3f0031b1b66a5218\",\r\n    \"startDate\": \"11.02.2022\",\r\n    \"endDate\": \"11.02.2022\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://test2.foroffice.ru/api/manager/reservations/6356d3aa461d5fee798f597a/63697cd800a39e3247391c9f",
+					"protocol": "http",
+					"host": [
+						"test2",
+						"foroffice",
+						"ru"
+					],
+					"path": [
+						"api",
+						"manager",
+						"reservations",
+						"6356d3aa461d5fee798f597a",
+						"63697cd800a39e3247391c9f"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/admin/users/ (create)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"user@mail.ru\",\r\n    \"password\": \"123456\",\r\n    \"name\": \"user\",\r\n    \"contactPhone\": \"+99999999999\",\r\n    \"role\": \"client\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://test2.foroffice.ru/api/admin/users/",
+					"protocol": "http",
+					"host": [
+						"test2",
+						"foroffice",
+						"ru"
+					],
+					"path": [
+						"api",
+						"admin",
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/admin/users/",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://test2.foroffice.ru/api/admin/users/",
+					"protocol": "http",
+					"host": [
+						"test2",
+						"foroffice",
+						"ru"
+					],
+					"path": [
+						"api",
+						"admin",
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/client/support-requests/ (create)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"text\": \"Test support request\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://test2.foroffice.ru/api/client/support-requests",
+					"protocol": "http",
+					"host": [
+						"test2",
+						"foroffice",
+						"ru"
+					],
+					"path": [
+						"api",
+						"client",
+						"support-requests"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/client/support-requests",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"text\": \"Test support request\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://test2.foroffice.ru/api/client/support-requests?limit=50&offset=0&isActive=true",
+					"protocol": "http",
+					"host": [
+						"test2",
+						"foroffice",
+						"ru"
+					],
+					"path": [
+						"api",
+						"client",
+						"support-requests"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "50"
+						},
+						{
+							"key": "offset",
+							"value": "0"
+						},
+						{
+							"key": "isActive",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/manager/support-requests",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"text\": \"Test support request\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://test2.foroffice.ru/api/manager/support-requests?limit=50&offset=0&isActive=true",
+					"protocol": "http",
+					"host": [
+						"test2",
+						"foroffice",
+						"ru"
+					],
+					"path": [
+						"api",
+						"manager",
+						"support-requests"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "50"
+						},
+						{
+							"key": "offset",
+							"value": "0"
+						},
+						{
+							"key": "isActive",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/common/support-requests/:id/messages",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"text\": \"Test support request\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://test2.foroffice.ru/api/common/support-requests/63697f3de3965b91761cd6fe/messages",
+					"protocol": "http",
+					"host": [
+						"test2",
+						"foroffice",
+						"ru"
+					],
+					"path": [
+						"api",
+						"common",
+						"support-requests",
+						"63697f3de3965b91761cd6fe",
+						"messages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/client/support-requests/:id/messages",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"text\": \"Next message\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://test2.foroffice.ru/api/common/support-requests/63697f3de3965b91761cd6fe/messages",
+					"protocol": "http",
+					"host": [
+						"test2",
+						"foroffice",
+						"ru"
+					],
+					"path": [
+						"api",
+						"common",
+						"support-requests",
+						"63697f3de3965b91761cd6fe",
+						"messages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/client/support-requests/:id/messages/read",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"createdBefore\": \"11.09.2022\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://test2.foroffice.ru/api/common/support-requests/63697f3de3965b91761cd6fe/messages/read",
+					"protocol": "http",
+					"host": [
+						"test2",
+						"foroffice",
+						"ru"
+					],
+					"path": [
+						"api",
+						"common",
+						"support-requests",
+						"63697f3de3965b91761cd6fe",
+						"messages",
+						"read"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
