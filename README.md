@@ -15,10 +15,6 @@ ports:
   - 29999:29999
   - 8080:8080
 ```
-4. Установить зависимости  
-```bash
-    docker-compose run --rm node npm i
-```
 5. Запустить  
 ```bash
     docker-compose up -d
