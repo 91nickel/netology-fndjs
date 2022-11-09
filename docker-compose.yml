@@ -2,9 +2,9 @@ version: "2"
 
 services:
   node:
-    image: node:14.17.6
+    build: ./docker/node
     working_dir: /www
-    entrypoint: sh /www/entrypoint.sh
+    entrypoint: sh /entrypoint.sh
     env_file:
       - .env
     ports:
