@@ -4,6 +4,8 @@
     git clone -b hotels https://github.com/91nickel/netology-books.git netology-hotels
     
     cd netology-hotels
+    
+    mv .env-example .env
 ```
 
 2. Заполнить файл .env переменными окружения
