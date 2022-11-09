@@ -8,7 +8,7 @@
 Задание опубликовано по адресу http://test2.foroffice.ru  
 Туда можно отправлять тестовые запросы
 
-Запросы для Postman, которые я использовал для тестирования, я собрал здесь:
+Запросы для Postman, которые я использовал для тестирования, я собрал здесь:  
 https://github.com/91nickel/netology-books/blob/hotels/hotels.postman_collection.json  
 
 По адресу http://test2.foroffice.ru откроется страница, на которой можно подписаться на получение сообщений по support request id через WebSocket  
