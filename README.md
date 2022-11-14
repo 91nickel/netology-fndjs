@@ -32,4 +32,4 @@ client@mail.ru / 123456
 manager@mail.ru / 123456  
 admin@mail.ru / 123456  
   
-По адресу http://test2.foroffice.ru откроется страница, на которой можно подписаться на получение сообщений по support request id через WebSocket  
+По адресу http://test2.foroffice.ru/api откроется страница, на которой можно подписаться на получение сообщений по support request id через WebSocket  
