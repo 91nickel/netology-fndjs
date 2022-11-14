@@ -1,4 +1,4 @@
-import { Test, TestingModule }         from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import { SupportRequestClientService } from './support-request-client.service';
 
 describe('SupportService', () => {
@@ -9,7 +9,9 @@ describe('SupportService', () => {
       providers: [SupportRequestClientService],
     }).compile();
 
-    service = module.get<SupportRequestClientService>(SupportRequestClientService);
+    service = module.get<SupportRequestClientService>(
+      SupportRequestClientService,
+    );
   });
 
   it('should be defined', () => {

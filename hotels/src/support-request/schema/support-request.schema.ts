@@ -1,28 +1,24 @@
-import { Prop, Schema, SchemaFactory }        from '@nestjs/mongoose'
-import { Document, Schema as MongooseSchema } from 'mongoose'
-import { Message, MessageDocument }           from './message.schema';
-import { User }                               from "../../user/schema/user.schema";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
+import { MessageDocument } from './message.schema';
+import { User } from '../../user/schema/user.schema';
 
 export type SupportRequestDocument = SupportRequest & Document;
 
 @Schema()
 export class SupportRequest {
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: User.name })
+  user: MongooseSchema.Types.ObjectId | string;
 
-    // @Prop({type: MongooseSchema.Types.ObjectId})
-    // readonly _id?: MongooseSchema.Types.ObjectId
+  @Prop()
+  createdAt: Date;
 
-    @Prop({type: MongooseSchema.Types.ObjectId, ref: User.name})
-    user: MongooseSchema.Types.ObjectId | string
+  @Prop()
+  messages: MessageDocument[];
 
-    @Prop()
-    createdAt: Date
-
-    @Prop()
-    messages: MessageDocument[]
-
-    @Prop()
-    isActive: boolean
-
+  @Prop()
+  isActive: boolean;
 }
 
-export const SupportRequestSchema = SchemaFactory.createForClass(SupportRequest);
+export const SupportRequestSchema =
+  SchemaFactory.createForClass(SupportRequest);

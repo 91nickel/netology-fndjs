@@ -1,4 +1,4 @@
-import { Test, TestingModule }   from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import { SupportRequestService } from './support-request.service';
 
 describe('SupportService', () => {

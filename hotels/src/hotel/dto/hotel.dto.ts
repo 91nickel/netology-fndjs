@@ -1,9 +1,9 @@
 export class CreateHotelDto {
-    title: string
-    description: string
+  title: string;
+  description: string;
 }
 
-export class SearchHotelsDto {
-    limit: number
-    offset: number
+export interface UpdateHotelParams {
+  title?: string;
+  description?: string;
 }
