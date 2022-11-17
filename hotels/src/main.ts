@@ -1,10 +1,11 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory }            from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { IoAdapter } from '@nestjs/platform-socket.io';
-import * as cookieParser from 'cookie-parser';
-import { join } from 'path';
-import { AppModule } from './app.module';
-import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { IoAdapter }              from '@nestjs/platform-socket.io';
+import * as cookieParser          from 'cookie-parser';
+import { join }                   from 'path';
+import { AppModule }              from './app.module';
+import { JwtAuthGuard }           from './auth/guards/jwt-auth.guard';
+import { YandexGuard }            from "./auth/guards/yandex.guard";
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
